@@ -7,9 +7,9 @@
 beta.ab(m, v)
 }
 \arguments{
-\item{m}{- mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent)}
+\item{m}{mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent)}
 
-\item{v}{- efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)}
+\item{v}{efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)}
 }
 \description{
 Function beta.ab() returns parameters alpha and beta for generating beta r.v. (per dose)

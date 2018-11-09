@@ -11,11 +11,11 @@ tox.stop(dose, dose.tox, p0, p1, K, coh.size)
 
 \item{dose.tox}{- vector of true toxicities for each dose. Values range from 0 - 1.}
 
-\item{p0}{- toxicity under null (unsafe DLT rate). Values range from 0 - 1.}
+\item{p0}{toxicity under null (unsafe DLT rate). Values range from 0 - 1.}
 
-\item{p1}{- toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
+\item{p1}{toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
 
-\item{K}{- threshold for LR. Takes integer values: 1,2,...(recommended K=2)}
+\item{K}{threshold for LR. Takes integer values: 1,2,...(recommended K=2)}
 }
 \description{
 Returns a 4-column matrix containing dose assign., DLTs at each dose, cohort number, and LR

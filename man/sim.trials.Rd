@@ -8,29 +8,29 @@ sim.trials(numsims, dose, dose.tox, p0, p1, K, coh.size, m, v, N,
   stop.rule = 9, cohort = 1, samedose = T, nbb = 100)
 }
 \arguments{
-\item{dose}{- number of doses to be tested (scalar)}
+\item{dose}{number of doses to be tested (scalar)}
 
-\item{dose.tox}{- vector of true toxicities for each dose. Values range from 0 - 1.}
+\item{dose.tox}{vector of true toxicities for each dose. Values range from 0 - 1.}
 
-\item{p0}{- toxicity under null (unsafe DLT rate). Values range from 0 - 1.}
+\item{p0}{toxicity under null (unsafe DLT rate). Values range from 0 - 1.}
 
-\item{p1}{- toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
+\item{p1}{toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
 
-\item{K}{- threshold for LR. Takes integer values: 1,2,... (recommended K=2)}
+\item{K}{threshold for LR. Takes integer values: 1,2,... (recommended K=2)}
 
-\item{coh.size}{- cohort size (number of patients) per dose}
+\item{coh.size}{cohort size (number of patients) per dose}
 
-\item{m}{- mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent)}
+\item{m}{mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent)}
 
-\item{v}{- efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)}
+\item{v}{efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)}
 
-\item{N}{- max sample size for stages 1&2}
+\item{N}{max sample size for stages 1&2}
 
-\item{stop.rule}{- if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info}
+\item{stop.rule}{if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info}
 
-\item{nbb}{- binomial parameter(default=100 cells per patient)}
+\item{nbb}{binomial parameter (default = 100 cells per patient)}
 
-\item{nsims}{- number of simulated trials}
+\item{nsims}{number of simulated trials}
 }
 \description{
 Results are displayed in a matrix format, where each row represents one trial   

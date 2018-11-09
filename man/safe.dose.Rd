@@ -7,17 +7,17 @@
 safe.dose(dose, dose.tox, p0, p1, K, coh.size)
 }
 \arguments{
-\item{dose}{- number of doses to be tested (scalar)}
+\item{dose}{number of doses to be tested (scalar)}
 
-\item{dose.tox}{- vector of true toxicities for each dose. Values range from 0 - 1.}
+\item{dose.tox}{vector of true toxicities for each dose. Values range from 0 - 1.}
 
-\item{p0}{- toxicity under null (unsafe DLT rate). Values range from 0 - 1.}
+\item{p0}{toxicity under null (unsafe DLT rate). Values range from 0 - 1.}
 
-\item{p1}{- toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
+\item{p1}{toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
 
-\item{K}{- threshold for LR. Takes integer values: 1,2,...(recommended K=2)}
+\item{K}{threshold for LR. Takes integer values: 1,2,...(recommended K=2)}
 
-\item{coh.size}{- cohort size (number of patients) per dose}
+\item{coh.size}{cohort size (number of patients) per dose}
 }
 \description{
 Function safe.dose() distinguishes acceptable from unacceptable doses

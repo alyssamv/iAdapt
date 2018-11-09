@@ -1,4 +1,4 @@
-Package: adaptDF
+Package: iAdapt
 Title: Two-stage adaptive dose-finding clinical trial design
 Version: 0.0.0.9000
 Authors@R: person("Alyssa", "Vanderbeek", email = "a.vanderbeek@columbia.edu", role = c("aut", "cre"))

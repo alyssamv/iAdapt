@@ -1,5 +1,5 @@
-#'  @title Generate stage 1 - safety 
-#'  @description Function gen.y.a() uses a beta-binomial distribution to generate outcomes (Ys) corresponding 
+#' @title Generate stage 1 - safety 
+#' @description Function gen.y.a() uses a beta-binomial distribution to generate outcomes (Ys) corresponding 
 #'  to all dose assign. in stage 1
 #'  Returns: Y.alloc - vector of Ys corresponding to all dose assign. from stage 1 
 #'                      (acceptable and unacceptable)
@@ -10,15 +10,15 @@
 #'                      randomization in stage 2
 #'          tox. safe - vector of toxicities corresponding to acceptable doses
 #'                 n1 - total number of pts. allocated in stage 1
-#' @param dose - number of doses to be tested (scalar)
-#' @param dose.tox - vector of true toxicities for each dose. Values range from 0 - 1.
-#' @param p0 - toxicity under null (unsafe DLT rate). Values range from 0 - 1.
-#' @param p1 - toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1
-#' @param K - threshold for LR. Takes integer values: 1,2,... (recommended K=2)
-#' @param coh.size - cohort size (number of patients) per dose
-#' @param m - mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
-#' @param v - efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)
-#' @param nbb - binomial parameter (default = 100 cells per patient)
+#' @param dose  number of doses to be tested (scalar)
+#' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
+#' @param p0  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
+#' @param p1  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1
+#' @param K  threshold for LR. Takes integer values: 1,2,... (recommended K=2)
+#' @param coh.size  cohort size (number of patients) per dose
+#' @param m  mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
+#' @param v  efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)
+#' @param nbb  binomial parameter (default = 100 cells per patient)
 
 
 gen.stg1 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, nbb = 100) {
