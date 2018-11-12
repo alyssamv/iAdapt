@@ -16,7 +16,15 @@ tox.stop(dose, dose.tox, p0, p1, K, coh.size)
 \item{p1}{toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1}
 
 \item{K}{threshold for LR. Takes integer values: 1,2,...(recommended K=2)}
+
+\item{coh.size}{cohort size (number of patients) per dosetox.stop <- function(dose, dose.tox, p0, p1, K, coh.size)}
+}
+\value{
+4-column matrix containing dose assign., DLTs at each dose, cohort number, and LR
 }
 \description{
 Returns a 4-column matrix containing dose assign., DLTs at each dose, cohort number, and LR
+}
+\examples{
+
 }

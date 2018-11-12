@@ -1,7 +1,11 @@
 #' @title Simulate full trial (both stages) x times
+#' 
 #' @description Results are displayed in a matrix format, where each row represents one trial   
-#' Returns: dose assignment for each patient in the trial - sim.dk   
+#' 
+#' @return List of the following objects:
+#'          dose assignment for each patient in the trial - sim.dk   
 #'          estimated persistence per each dose assignment - sim.yk
+#'          
 #' @param nsims  number of simulated trials
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
@@ -14,6 +18,10 @@
 #' @param N  max sample size for stages 1&2
 #' @param stop.rule  if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info
 #' @param nbb  binomial parameter (default = 100 cells per patient)
+#' 
+#' @examples
+#' 
+#' @export
 
 
 sim.trials <- function(numsims, dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = T, nbb = 100){

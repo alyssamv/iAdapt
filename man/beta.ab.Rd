@@ -11,6 +11,13 @@ beta.ab(m, v)
 
 \item{v}{efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)}
 }
+\value{
+Vector of alpha and beta values for generating beta random variable for a dose.
+}
 \description{
 Function beta.ab() returns parameters alpha and beta for generating beta r.v. (per dose)
+}
+\examples{
+ 
+test
 }

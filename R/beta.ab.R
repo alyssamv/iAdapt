@@ -1,7 +1,14 @@
 #' @title Get Beta parameters
+#' 
 #' @description Function beta.ab() returns parameters alpha and beta for generating beta r.v. (per dose) 
+#' 
+#' @return Vector of alpha and beta values for generating beta random variable for a dose.
+#' 
 #' @param m  mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
 #' @param v  efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)
+#' 
+#' @examples  
+#' test
 
 beta.ab <- function(m, v) {
   

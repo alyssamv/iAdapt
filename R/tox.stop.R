@@ -1,11 +1,19 @@
 #' @title Generate DLTs and calculate the LR for each dose
+#' 
 #' @description Returns a 4-column matrix containing dose assign., DLTs at each dose, cohort number, and LR
+#' 
+#' @return 4-column matrix containing dose assign., DLTs at each dose, cohort number, and LR
+#' 
 #' @param dose - number of doses to be tested (scalar)
 #' @param dose.tox - vector of true toxicities for each dose. Values range from 0 - 1.
 #' @param p0  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
 #' @param p1  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1
 #' @param K  threshold for LR. Takes integer values: 1,2,...(recommended K=2)
-#' @param coh.size  cohort size (number of patients) per dosetox.stop <- function(dose, dose.tox, p0, p1, K, coh.size) {
+#' @param coh.size  cohort size (number of patients) per dosetox.stop <- function(dose, dose.tox, p0, p1, K, coh.size)
+#' 
+#' @examples
+#' 
+#' @export
  
 tox.stop <- function(dose, dose.tox, p0, p1, K, coh.size){ 
   dose   <- c(1:dose) # vector of counts up to number of doses given

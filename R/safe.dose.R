@@ -1,15 +1,23 @@
 #' @title Identify safe doses  
+#' 
 #' @description Function safe.dose() distinguishes acceptable from unacceptable doses
-#' Returns: alloc.safe - matrix of assign. for only acceptable doses (to be used in stage 2) and the 
+#' 
+#' @return List of the following objects:
+#'          alloc.safe - matrix of assign. for only acceptable doses (to be used in stage 2) and the 
 #'                       corresponding toxicities
 #'          alloc.total - vector of all assign. from stage 1 
 #'          n1 - total number of pts. allocated in stage 1
+#'          
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
 #' @param p0  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
 #' @param p1  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1
 #' @param K  threshold for LR. Takes integer values: 1,2,...(recommended K=2)
 #' @param coh.size  cohort size (number of patients) per dose
+#' 
+#' @examples
+#' 
+#' @export
 
 
 safe.dose <- function(dose, dose.tox, p0, p1, K, coh.size) {

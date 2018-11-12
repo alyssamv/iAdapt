@@ -32,8 +32,14 @@ sim.trials(numsims, dose, dose.tox, p0, p1, K, coh.size, m, v, N,
 
 \item{nsims}{number of simulated trials}
 }
-\description{
-Results are displayed in a matrix format, where each row represents one trial   
-Returns: dose assignment for each patient in the trial - sim.dk   
+\value{
+List of the following objects:
+         dose assignment for each patient in the trial - sim.dk   
          estimated persistence per each dose assignment - sim.yk
+}
+\description{
+Results are displayed in a matrix format, where each row represents one trial
+}
+\examples{
+
 }

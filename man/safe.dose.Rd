@@ -19,10 +19,16 @@ safe.dose(dose, dose.tox, p0, p1, K, coh.size)
 
 \item{coh.size}{cohort size (number of patients) per dose}
 }
-\description{
-Function safe.dose() distinguishes acceptable from unacceptable doses
-Returns: alloc.safe - matrix of assign. for only acceptable doses (to be used in stage 2) and the 
+\value{
+List of the following objects:
+         alloc.safe - matrix of assign. for only acceptable doses (to be used in stage 2) and the 
                       corresponding toxicities
          alloc.total - vector of all assign. from stage 1 
          n1 - total number of pts. allocated in stage 1
+}
+\description{
+Function safe.dose() distinguishes acceptable from unacceptable doses
+}
+\examples{
+
 }

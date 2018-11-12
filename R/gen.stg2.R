@@ -1,11 +1,15 @@
 #' @title Generate stage 2 - efficacy
+#' 
 #' @description Function f.study.a() fits a linear regression for the continuous efficacy outcomes,
 #' computes the randomization probabilities/dose and allocates the next patient to a dose that
 #' is considered acceptably safe and has the highest efficacy
-#' Returns: yk.final - vector of all efficacy outcomes (Ys) corresponding to dose assign.
+#' 
+#' @return List of the following objects:
+#'          yk.final - vector of all efficacy outcomes (Ys) corresponding to dose assign.
 #'                      (Stage 1&2)
 #'          dk.final - vector of all dose assign.(Stage 1&2)
 #' If no dose allocation, put NAs in dk.final and yk.final
+#' 
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
 #' @param p0  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
@@ -18,6 +22,10 @@
 #' @param N  max sample size for stages 1&2
 #' @param stop.rule  if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info
 #' @param nbb  binomial parameter (default = 100 cells per patient)
+#' 
+#' @examples
+#' 
+#' @export
 
 
 gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, cohort=1, samedose=T, nbb=100) {

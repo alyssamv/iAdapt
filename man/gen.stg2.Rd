@@ -32,12 +32,18 @@ gen.stg2(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule = 9,
 
 \item{nbb}{binomial parameter (default = 100 cells per patient)}
 }
+\value{
+List of the following objects:
+         yk.final - vector of all efficacy outcomes (Ys) corresponding to dose assign.
+                     (Stage 1&2)
+         dk.final - vector of all dose assign.(Stage 1&2)
+If no dose allocation, put NAs in dk.final and yk.final
+}
 \description{
 Function f.study.a() fits a linear regression for the continuous efficacy outcomes,
 computes the randomization probabilities/dose and allocates the next patient to a dose that
 is considered acceptably safe and has the highest efficacy
-Returns: yk.final - vector of all efficacy outcomes (Ys) corresponding to dose assign.
-                     (Stage 1&2)
-         dk.final - vector of all dose assign.(Stage 1&2)
-If no dose allocation, put NAs in dk.final and yk.final
+}
+\examples{
+
 }

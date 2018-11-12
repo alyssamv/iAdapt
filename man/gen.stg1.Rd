@@ -25,10 +25,9 @@ gen.stg1(dose, dose.tox, p0, p1, K, coh.size, m, v, nbb = 100)
 
 \item{nbb}{binomial parameter (default = 100 cells per patient)}
 }
-\description{
-Function gen.y.a() uses a beta-binomial distribution to generate outcomes (Ys) corresponding 
- to all dose assign. in stage 1
- Returns: Y.alloc - vector of Ys corresponding to all dose assign. from stage 1 
+\value{
+List of the following objects:
+           Y.alloc - vector of Ys corresponding to all dose assign. from stage 1 
                      (acceptable and unacceptable)
            d.alloc - vector of all dose assign. from stage 1
             Y.safe - subset of Y.alloc corresponding to only acceptable doses; to be used for 
@@ -37,4 +36,12 @@ Function gen.y.a() uses a beta-binomial distribution to generate outcomes (Ys) c
                      randomization in stage 2
          tox. safe - vector of toxicities corresponding to acceptable doses
                 n1 - total number of pts. allocated in stage 1
+}
+\description{
+Function gen.y.a() uses a beta-binomial distribution to generate outcomes (Ys) corresponding 
+ to all dose assignment in stage 1.
+}
+\examples{
+write examples here
+
 }

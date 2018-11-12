@@ -1,7 +1,10 @@
 #' @title Generate stage 1 - safety 
+#' 
 #' @description Function gen.y.a() uses a beta-binomial distribution to generate outcomes (Ys) corresponding 
-#'  to all dose assign. in stage 1
-#'  Returns: Y.alloc - vector of Ys corresponding to all dose assign. from stage 1 
+#'  to all dose assignment in stage 1.
+#' 
+#' @return List of the following objects:
+#'            Y.alloc - vector of Ys corresponding to all dose assign. from stage 1 
 #'                      (acceptable and unacceptable)
 #'            d.alloc - vector of all dose assign. from stage 1
 #'             Y.safe - subset of Y.alloc corresponding to only acceptable doses; to be used for 
@@ -10,6 +13,7 @@
 #'                      randomization in stage 2
 #'          tox. safe - vector of toxicities corresponding to acceptable doses
 #'                 n1 - total number of pts. allocated in stage 1
+#'                 
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
 #' @param p0  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
@@ -19,6 +23,11 @@
 #' @param m  mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
 #' @param v  efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)
 #' @param nbb  binomial parameter (default = 100 cells per patient)
+#' 
+#' @examples 
+#' write examples here
+#' 
+#' @export
 
 
 gen.stg1 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, nbb = 100) {
