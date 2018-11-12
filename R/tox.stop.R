@@ -12,6 +12,18 @@
 #' @param coh.size  cohort size (number of patients) per dosetox.stop <- function(dose, dose.tox, p0, p1, K, coh.size)
 #' 
 #' @examples
+#' dose = 5                                      # dose levels
+#' dose.tox <- c(0.05, 0.10, 0.15, 0.20, 0.30)   # True toxicity per dose
+#' p0 = 0.40                                     # Unacceptable DLT rate
+#' p1 = 0.15                                     # Acceptable DLT rate
+#' K = 2                                         # Likelihood-ratio (LR) threshold
+#' coh.size = 3                                  # (3 pts per dose in stage 1)
+#' m <- c(5, 15, 40, 65, 80)                     # Mean efficacy per dose (here mean persistence per dose (per cents)
+#' v <- rep(0.01,5)                              # Efficacy variance per dose
+#' N = 25                                        # Total sample size (stages 1&2)
+#' stop.rule = 9                                 # If dose 1 is the only safe dose remaining, allocate up to 9 pts. to collect more info
+#' 
+#' tox.stop(dose = dose, dose.tox = dose.tox, p0 = p0, p1 = p1, K = K, coh.size = coh.size)
 #' 
 #' @export
  
