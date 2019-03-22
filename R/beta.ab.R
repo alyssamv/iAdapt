@@ -1,14 +1,16 @@
-#' @title Get Beta parameters
+#' @title Generates parameters for the beta distribution # I don't think we need to show this as a separate function, 
+#'                                                         but put together with gen.eff.stg1 or be called by gen.eff.stg1
 #' 
 #' @description Function beta.ab() returns parameters alpha and beta for generating beta r.v. (per dose) 
 #' 
 #' @return Vector of alpha and beta values for generating beta random variable for a dose.
 #' 
-#' @param m  mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
-#' @param v  efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)
+#' @param m  Vector of mean efficacies per dose. Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
+#' @param v  Vector of efficacy variances per dose. Values range from 0 - 1. (e.g., 0.01)
 #' 
 #' @examples  
-#' test
+#' 
+#' @export
 
 beta.ab <- function(m, v) {
   

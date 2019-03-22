@@ -2,14 +2,15 @@
 % Please edit documentation in R/beta.ab.R
 \name{beta.ab}
 \alias{beta.ab}
-\title{Get Beta parameters}
+\title{Generates parameters for the beta distribution # I don't think we need to show this as a separate function, 
+                                                        but put together with gen.eff.stg1 or be called by gen.eff.stg1}
 \usage{
 beta.ab(m, v)
 }
 \arguments{
-\item{m}{mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent)}
+\item{m}{Vector of mean efficacies per dose. Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent)}
 
-\item{v}{efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)}
+\item{v}{Vector of efficacy variances per dose. Values range from 0 - 1. (e.g., 0.01)}
 }
 \value{
 Vector of alpha and beta values for generating beta random variable for a dose.
@@ -19,5 +20,5 @@ Function beta.ab() returns parameters alpha and beta for generating beta r.v. (p
 }
 \examples{
  
-test
+
 }

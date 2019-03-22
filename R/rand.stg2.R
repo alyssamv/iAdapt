@@ -1,36 +1,37 @@
-#' @title Generate stage 2 - efficacy
+#' @title Stage 2 Adaptive Randomization
 #' 
-#' @description Function f.study.a() fits a linear regression for the continuous efficacy outcomes,
+#' @description Function rand.stg2() fits a linear regression for the continuous efficacy outcomes,
 #' computes the randomization probabilities/dose and allocates the next patient to a dose that
-#' is considered acceptably safe and has the highest efficacy
+#' is considered acceptably safe and has the highest efficacy. Dose safety is still monitored using LR and doses
+#' that become unacceptable are discarded.
 #' 
 #' @return List of the following objects:
-#'          yk.final - vector of all efficacy outcomes (Ys) corresponding to dose assign.
-#'                      (Stage 1&2)
-#'          dk.final - vector of all dose assign.(Stage 1&2)
-#' If no dose allocation, put NAs in dk.final and yk.final
+#'        Y.final - vector of all efficacy outcomes (Ys) corresponding to dose assignments (Stages 1&2)
+#'        d.final - vector of all dose assignments(Stage 1&2)
+#' If no dose allocation, put NAs in d.final and y.final
 #' 
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
-#' @param p0  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
-#' @param p1  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p0 > p1
-#' @param K  threshold for LR. Takes integer values: 1,2,... (recommended K=2)
-#' @param coh.size  cohort size (number of patients) per dose
-#' @param m  mean efficacy of a dose (single value). Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
-#' @param v  efficacy variances of a dose (single value). Values range from 0 - 1. (e.g., 0.01)
+#' @param p1  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
+#' @param p2  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p1 > p2
+#' @param K  threshold for LR. Takes integer values: 1,2,...(recommended K=2)
+#' @param coh.size  cohort size (number of patients) per dose (Stage 1) 
+#' @param m  vector of mean efficacies per dose. Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
+#' @param v  vector of efficacy variances per dose. Values range from 0 - 1. (e.g., 0.01)
 #' @param nbb  binomial parameter (default = 100 cells per patient)
-#' @param N  max sample size for stages 1&2
+#' @param N  total sample size for stages 1&2
 #' @param stop.rule  if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info
-#' @param nbb  binomial parameter (default = 100 cells per patient)
+#' @param cohort ##########
+#' @param samedose ###########
 #' 
 #' @examples
 #' 
 #' @export
 
 
-gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, cohort=1, samedose=T, nbb=100) {
+rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule=9, cohort=1, samedose=T, nbb=100) {
   
-  res <- gen.y.a(dose, dose.tox, p0, p1, K, coh.size, m, v, nbb)
+  res <- gen.eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb)
   yk.safe <- res$Y.safe                                    
   yk.final <- res$Y.alloc                   
   dk.safe <- res$d.safe                                          # Safe doses from stage 1 used for randomization  
@@ -51,7 +52,7 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
   if (nd == 1) {                                               # If only dose 1 safe, allocate up to 9 pts., no stage 2                
     extra <- stop.rule - length(dk.safe)
     ab <- beta.ab(m[1]/100, v[1])
-    y.extra <- 100*rbinom(extra, nbb, rbeta(1, ab$a, ab$b) ) / nbb
+    y.extra <- 100*stats::rbinom(extra, nbb, stats::rbeta(1, ab$a, ab$b) ) / nbb
     yk.final <- c(yk.final, y.extra)                          
     dk.final <- c(dk.final, rep(1,extra))     
     stop <- 1    
@@ -65,17 +66,16 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
       
       if (stop == 0) {                                        # As long as there are 2 or more doses in randomization
         
-        reg <- lm(log(yk.safe + 1) ~ factor(dk.safe))         # Linear model with log(Y) for accept. doses 
+        reg <- stats::lm(log(yk.safe + 1) ~ factor(dk.safe))         # Linear model with log(Y) for accept. doses 
         fit <- as.vector(reg$fitted.values)                   # Fitted values for Y
         dose.unique <- duplicated(dk.safe)
-        fitp <- exp(fit) / 100
-        #	            doseu <- dk.safe[dose.unique == F]
+        fitp <- exp(fit) 
         fitp <- fitp[dose.unique == F]
-        fitp <- ifelse(fitp > 1, 1, fitp)                     # Restrict values - %persistence can only be b/w 0 and 1
-        fitp <- ifelse(fitp < 0, 0, fitp)                              
+        #fitp <- ifelse(fitp > 100, 100, fitp)                 # Restrict values - %persistence can only be b/w 0 and 1
+        #fitp <- ifelse(fitp < 0, 0, fitp)                              
         rp <- fitp/sum(fitp)                                  # Calculate randomization prob. for each dose
-        rp <- ifelse(rp < 0.05, 0.05, rp)                   
-        dj <- rmultinom(1, 1, prob = rp)                      # New (next) dose assign.
+        rp <- ifelse(rp < 0.02, 0.02, rp)                   
+        dj <- stats::rmultinom(1, 1, prob = rp)                      # New (next) dose assign.
         
         if (samedose) {
           dj <- rep((1:length(dj))[dj == 1], cohort)
@@ -84,9 +84,9 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
           dj <- dosemat[dosemat > 0]
         } 
         ab <- beta.ab(m[dj]/100, v[dj])
-        p <- rbeta(1, ab$a, ab$b)
-        yj <- 100*rbinom(1, nbb, p)/nbb                      # New Y value
-        toxj <- rbinom(1, size = 1, dose.tox[dj])            # New toxicity for the next patient
+        p <- stats::rbeta(1, ab$a, ab$b)
+        yj <- 100*stats::rbinom(1, nbb, p)/nbb                      # New Y value
+        toxj <- stats::rbinom(1, size = 1, dose.tox[dj])            # New toxicity for the next patient
         
         coh.toxj <- c(dj, toxj)                              # New dose and new tox.  
         yk.safe  <- c(yk.safe, yj)
@@ -115,24 +115,24 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
           }else {                        
             LR.table <- cbind(LR.table.temp[,1], n.obsk)
           }
+          loglik.p2 <- NULL
           loglik.p1 <- NULL
-          loglik.p0 <- NULL
           lik.diff <- NULL
           accept.dose <- NULL
           
           for (j in 1:nrow(LR.table)) {
             
+            loglik.p2[j] <- LR.table[j, 1]*log(p2) + (LR.table[j, 2] - LR.table[j, 1])*log(1 - p2)          
             loglik.p1[j] <- LR.table[j, 1]*log(p1) + (LR.table[j, 2] - LR.table[j, 1])*log(1 - p1)          
-            loglik.p0[j] <- LR.table[j, 1]*log(p0) + (LR.table[j, 2] - LR.table[j, 1])*log(1 - p0)          
-            lik.diff[j] <- exp(loglik.p1[j] - loglik.p0[j])              
+            lik.diff[j] <- exp(loglik.p2[j] - loglik.p1[j])              
             accept.dose[j] <- ifelse(lik.diff[j] > (1/K), 1, 0)
           }              
           dk.safe[dk.safe >= which(accept.dose == 0)] <- NA           # Discard the non-safe doses and all above it by putting NAs
           
           new.model <- cbind(dk.safe,yk.safe)
-          new.model <- na.omit(new.model)
-          dk.safe <- new.model[, 1]                              # New vector of safe doses
-          yk.safe <- new.model[, 2]                              # New Y vector  
+          new.model <- stats::na.omit(new.model)
+          dk.safe <- new.model[, 1]                              
+          yk.safe <- new.model[, 2]                               
           yk.final <- yk.final
           dk.final <- dk.final
           
@@ -140,7 +140,7 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
           
         }#else LR
         
-        if (length(unique(dk.safe)) > 1) {                                     # continue rand. if more than 2 doses 
+        if (length(unique(dk.safe)) > 1) {                              # continue rand. if more than 2 doses 
           
           dk.safe <- dk.safe
           yk.safe <- yk.safe
@@ -155,7 +155,7 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
           if ((length(dk.safe) < stop.rule) && (length.dk1 < new.size)) {     # if the max. sample size was not reached and less than 9 subj. at dose 1                                  
             extra.one <- min(new.size - length.dk1, stop.rule - length(dk.safe))                     
             ab <- beta.ab(m[1]/100, v[1])
-            yj.one <- 100*rbinom(extra.one, nbb, rbeta(1, ab$a, ab$b) ) / nbb
+            yj.one <- 100*stats::rbinom(extra.one, nbb, stats::rbeta(1, ab$a, ab$b) ) / nbb
             yk.final <- c(yk.final, yj.one)
             dk.final <- c(dk.final, rep(1, extra.one))         
             stop <- 1   
@@ -167,7 +167,7 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
             stop <- 1
           }
         }
-        if (length(unique(dk.safe)) < 1) {                                  # stop of no dose left
+        if (length(unique(dk.safe)) < 1) {                                  # stop if no dose left
           dk.final <- dk.final
           yk.final <- yk.final
           stop <- 1
@@ -179,7 +179,7 @@ gen.stg2 <- function(dose, dose.tox, p0, p1, K, coh.size, m, v, N, stop.rule=9, 
     }# end for
   }# end(if nd>1)
   
-  return(list(yk.final = yk.final, 
-              dk.final = dk.final, 
+  return(list(Y.final = yk.final, 
+              d.final = dk.final, 
               n1 = n1))
 }
