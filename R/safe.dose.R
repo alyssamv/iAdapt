@@ -22,6 +22,9 @@
 #' p2 = 0.15                                     # Acceptable DLT rate
 #' K = 2                                         # Likelihood-ratio (LR) threshold
 #' coh.size = 3                                  # Assign 3 pts per dose in stage 1
+#' 
+#' safe.dose()
+#' 
 #' @export
 
 

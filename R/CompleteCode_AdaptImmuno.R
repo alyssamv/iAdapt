@@ -112,19 +112,19 @@ beta.ab <- function(m, v) {
 
 
 #################################################################################################
-#  Function gen.eff.stg1() uses a beta-binomial distribution to generate outcomes (Ys) corresponding
+#  Function eff.stg1() uses a beta-binomial distribution to generate outcomes (Ys) corresponding
 #  to all dose assignments in stage 1
 
 #  Returns: Y.safe - vector of efficacy outcomes corresponding to only acceptable doses; to be used for 
-#'                   randomization in stage 2
-#'          d.safe - vector of acceptable dose assignments; to be used for 
-#'                   randomization in stage 2
-#'       tox. safe - vector of toxicities corresponding to acceptable doses
-#'              n1 - total number of subjects allocated in stage 1
-#'         Y.alloc - vector of efficacy outcomes corresponding to all dose assignments from stage 1 
-#'                   (acceptable and unacceptable)
-#'         d.alloc - vector of all dose assignments from stage 1         
-#'                 
+#                   randomization in stage 2
+#          d.safe - vector of acceptable dose assignments; to be used for 
+#                   randomization in stage 2
+#       tox. safe - vector of toxicities corresponding to acceptable doses
+#              n1 - total number of subjects allocated in stage 1
+#         Y.alloc - vector of efficacy outcomes corresponding to all dose assignments from stage 1 
+#                   (acceptable and unacceptable)
+#         d.alloc - vector of all dose assignments from stage 1         
+#                 
 # dose  number of doses to be tested (scalar)
 # dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
 # p1  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
@@ -135,7 +135,7 @@ beta.ab <- function(m, v) {
 # v  vector of efficacy variances per dose. Values range from 0 - 1. (e.g., 0.01)
 # nbb  binomial parameter (default = 100 cells per patient)
 
-gen.eff.stg1 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb = 100) {
+eff.stg1 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb = 100) {
   
   res <- safe.dose(dose, dose.tox, p1, p2, K, coh.size)
   d.alloc <- res$alloc.total
@@ -211,7 +211,7 @@ gen.eff.stg1 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb = 100) {
 
 rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule=9, cohort=1, samedose=T, nbb=100) {
   
-  res <- gen.eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb)
+  res <- eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb)
   yk.safe <- res$Y.safe                                    
   yk.final <- res$Y.alloc                   
   dk.safe <- res$d.safe                                          # Safe doses from stage 1 used for randomization  

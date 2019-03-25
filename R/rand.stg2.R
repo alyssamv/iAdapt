@@ -31,7 +31,7 @@
 
 rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule=9, cohort=1, samedose=T, nbb=100) {
   
-  res <- gen.eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb)
+  res <- eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb)
   yk.safe <- res$Y.safe                                    
   yk.final <- res$Y.alloc                   
   dk.safe <- res$d.safe                                          # Safe doses from stage 1 used for randomization  

@@ -70,7 +70,7 @@ tox.profile(dose, dose.tox, p1, p2, K, coh.size)
 #[1] 15                                       # no. subjects used in stage 1
 
 # Function to generate efficacy outcomes (here percent persistence) for each dose
-gen.eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb=100)
+eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb=100)
 
 # Selected output
 # Efficacy outcomes only for safe doses to be used in stage 2
