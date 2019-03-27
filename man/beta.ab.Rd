@@ -16,9 +16,10 @@ beta.ab(m, v)
 Vector of alpha and beta values for generating beta random variable for a dose.
 }
 \description{
-Function beta.ab() returns parameters alpha and beta for generating beta r.v. (per dose)
+Function \code{beta.ab()} returns parameters alpha and beta for generating beta r.v. (per dose)
 }
 \examples{
  
 
 }
+\keyword{internal}

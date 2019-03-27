@@ -72,9 +72,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>This package provides R code for simulating {and implementing} the adaptive two-stage early-phase dose escalation design for continuous immunologic outcomes with safety constraints. Full details on the method can be found in the publication by Chiuzan et al., found <a href="https://www.tandfonline.com/doi/abs/10.1080/19466315.2018.1462727">here</a>.</p>
-<p>The design uses a likelihood paradigm to determine the acceptability of a dose (that is, a safe dose is acceptable). When the likelihood ratio for a dose is greater than a prespecified threshold, the dose is considered acceptable and subsequent patients are enrolled on the next dose level. Conversely, if the likelihood ratio is less than or equal to the threshold, escalation is stopped.</p>
-<p>The example we will be working with is the following: suppose we have a study with 5 dose levels to test, each of which has an associated “true” toxicity level and (mean) efficacy. Additionally, we specify an acceptable and unacceptable proportion of dose-limiting toxicities (DLTs). N patients are to be assigned to each dose level.</p>
+<p>This package provides R code for simulating {and implementing} the adaptive two-stage early-phase dose escalation design for continuous immunologic outcomes with safety constraints. Stage 1 is safety-driven dose-escalation, and Stage 2 employs efficacy-driven randomization while continuing to monitor dose safety. This design is relevant in the face of a non-monotonous dose-toxicity relationship - a phenomenon that most often seen in immunologic therapies [REFERENCE]. Additionally, the probabilistic nature (as opposed to rule-based) provides an advantage in identifying the optimal dose to carry forward in development.</p>
+<p>The design uses a likelihood paradigm to determine the acceptability (safety) of a dose. e.g. In Stage 1, when the likelihood ratio for a dose is greater than a prespecified threshold, the dose is considered acceptable and subsequent patients are enrolled on the next dose level. Conversely, if the likelihood ratio is less than or equal to the threshold, escalation is stopped. Full details on the method can be found in the publication by Chiuzan et al., found <a href="https://www.tandfonline.com/doi/abs/10.1080/19466315.2018.1462727">here</a>.</p>
+<p>The example we will be working with is the following: suppose we have a study with 5 dose levels to test, each of which has an associated “true” toxicity level and (mean) efficacy. Additionally, we specify an acceptable and unacceptable proportion of dose-limiting toxicities (DLTs). N patients are to be assigned to each dose level. We work with a continuous efficacy outcome and binary toxicity measure.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Number of pre-specified dose levels</span>
 dose &lt;-<span class="st"> </span><span class="dv">5</span> 
 
@@ -111,15 +111,18 @@ stop.rule &lt;-<span class="st"> </span><span class="dv">9</span>   </code></pre
 <pre><code>##      [,1] [,2] [,3] [,4]
 ## [1,]    1    0    1 2.84
 ## [2,]    2    0    2 2.84
-## [3,]    3    2    3 0.20</code></pre>
+## [3,]    3    0    3 2.84
+## [4,]    4    0    4 2.84
+## [5,]    5    1    5 0.75</code></pre>
 <p>Function to select only the acceptable toxic doses</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">safe.dose</span>(<span class="dt">dose =</span> dose, <span class="dt">dose.tox =</span> dose.tox, <span class="dt">p1 =</span> p_no, <span class="dt">p2 =</span> p_yes, <span class="dt">K =</span> K, <span class="dt">coh.size =</span> coh.size) </code></pre></div>
 <pre><code>## $alloc.safe
 ##      [,1] [,2]
-## [1,]    1    0
-## [2,]    2    0
-## [3,]    3    0
-## [4,]    4    1
+## [1,]    1    1
+## [2,]    2    1
+## [3,]    3    1
+## [4,]    4    0
+## [5,]    5    0
 ## 
 ## $alloc.total
 ##  [1] 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5
@@ -129,22 +132,22 @@ stop.rule &lt;-<span class="st"> </span><span class="dv">9</span>   </code></pre
 <p>Function to generate efficacy outcomes (here percent persistence) for each dose</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">eff.stg1</span>(<span class="dt">dose =</span> dose, <span class="dt">dose.tox =</span> dose.tox, <span class="dt">p1 =</span> p_no, <span class="dt">p2 =</span> p_yes, <span class="dt">K =</span> K, <span class="dt">coh.size =</span> coh.size, m, v, <span class="dt">nbb =</span> <span class="dv">100</span>)</code></pre></div>
 <pre><code>## $Y.safe
-## [1]  1  1  1  9 21  8 23 51 42
+##  [1]  4  0  4 15 19 29 46 36 52 70 87 69 66 57 89
 ## 
 ## $d.safe
-## [1] 1 1 1 2 2 2 3 3 3
+##  [1] 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5
 ## 
 ## $tox.safe
-## [1] 1 1 0
+## [1] 0 0 1 1 0
 ## 
 ## $n1
-## [1] 12
+## [1] 15
 ## 
 ## $Y.alloc
-##  [1]  1  1  1  9 21  8 23 51 42 80 70 81
+##  [1]  4  0  4 15 19 29 46 36 52 70 87 69 66 57 89
 ## 
 ## $d.alloc
-##  [1] 1 1 1 2 2 2 3 3 3 4 4 4</code></pre>
+##  [1] 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5</code></pre>
 </div>
 <div id="stage-2" class="section level2">
 <h2>Stage 2</h2>
@@ -152,11 +155,11 @@ stop.rule &lt;-<span class="st"> </span><span class="dv">9</span>   </code></pre
 <p>Function to fit a linear regression for the continuous efficacy outcomes, compute the randomization probabilities per dose and allocate the next subject to an acceptable safe dose that has the highest randomization probability.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rand.stg2</span>(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, <span class="dt">stop.rule =</span> stop.rule, <span class="dt">cohort =</span> <span class="dv">1</span>, <span class="dt">samedose =</span> T, <span class="dt">nbb =</span> <span class="dv">100</span>) </code></pre></div>
 <pre><code>## $Y.final
-##  [1]  4  2  0 10 17 18 27 55 29 63 58 74 86 84 79 56 87 45 43  3  0  9  1
-## [24] 22  6
+##  [1] 10  8  0 23 18 17 45 55 53 56 68 71 70 70 62 24  4 76 71 85 67 78 35
+## [24] 26 94
 ## 
 ## $d.final
-##  [1] 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 4 5 3 3 1 2 2 1 2 2
+##  [1] 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 3 2 4 4 4 4 5 3 2 5
 ## 
 ## $n1
 ## [1] 15</code></pre>

@@ -1,7 +1,7 @@
 #' @title Generates parameters for the beta distribution # I don't think we need to show this as a separate function, 
 #'                                                         but put together with gen.eff.stg1 or be called by gen.eff.stg1
 #' 
-#' @description Function beta.ab() returns parameters alpha and beta for generating beta r.v. (per dose) 
+#' @description Function \code{beta.ab()} returns parameters alpha and beta for generating beta r.v. (per dose) 
 #' 
 #' @return Vector of alpha and beta values for generating beta random variable for a dose.
 #' 
@@ -11,6 +11,8 @@
 #' @examples  
 #' 
 #' @export
+#' 
+#' @keywords internal
 
 beta.ab <- function(m, v) {
   

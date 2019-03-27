@@ -1,6 +1,6 @@
 #' @title Stage 2 Adaptive Randomization
 #' 
-#' @description Function rand.stg2() fits a linear regression for the continuous efficacy outcomes,
+#' @description Function \code{rand.stg2()} fits a linear regression for the continuous efficacy outcomes,
 #' computes the randomization probabilities/dose and allocates the next patient to a dose that
 #' is considered acceptably safe and has the highest efficacy. Dose safety is still monitored using LR and doses
 #' that become unacceptable are discarded.
@@ -29,7 +29,7 @@
 #' @export
 
 
-rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule=9, cohort=1, samedose=T, nbb=100) {
+rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = T, nbb = 100) {
   
   res <- eff.stg1(dose, dose.tox, p1, p2, K, coh.size, m, v, nbb)
   yk.safe <- res$Y.safe                                    

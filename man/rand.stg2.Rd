@@ -41,7 +41,7 @@ List of the following objects:
 If no dose allocation, put NAs in d.final and y.final
 }
 \description{
-Function rand.stg2() fits a linear regression for the continuous efficacy outcomes,
+Function \code{rand.stg2()} fits a linear regression for the continuous efficacy outcomes,
 computes the randomization probabilities/dose and allocates the next patient to a dose that
 is considered acceptably safe and has the highest efficacy. Dose safety is still monitored using LR and doses
 that become unacceptable are discarded.

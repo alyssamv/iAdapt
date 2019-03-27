@@ -14,12 +14,13 @@ library(iAdapt)
 
 ## Overview 
 
-This package provides R code for simulating \{and implementing\} the adaptive two-stage early-phase dose escalation design for continuous immunologic outcomes with safety constraints. Full details on the method can be found in the publication by Chiuzan et al., found [here](https://www.tandfonline.com/doi/abs/10.1080/19466315.2018.1462727).
+This package provides R code for simulating \{and implementing\} the adaptive two-stage early-phase dose escalation design for continuous immunologic outcomes with safety constraints. Stage 1 is safety-driven dose-escalation, and Stage 2 employs efficacy-driven randomization while continuing to monitor dose safety. This design is relevant in the face of a non-monotonous dose-toxicity relationship - a phenomenon that most often seen in immunologic therapies [REFERENCE]. Additionally, the probabilistic nature (as opposed to rule-based) provides an advantage in identifying the optimal dose to carry forward in development. 
 
-The design uses a likelihood paradigm to determine the acceptability of a dose (that is, a safe dose is acceptable). When the likelihood ratio for a dose is greater than a prespecified threshold, the dose is considered acceptable and subsequent patients are enrolled on the next dose level. Conversely, if the likelihood ratio is less than or equal to the threshold, escalation is stopped. 
+The design uses a likelihood paradigm to determine the acceptability (safety) of a dose. e.g. In Stage 1, when the likelihood ratio for a dose is greater than a prespecified threshold, the dose is considered acceptable and subsequent patients are enrolled on the next dose level. Conversely, if the likelihood ratio is less than or equal to the threshold, escalation is stopped. Full details on the method can be found in the publication by Chiuzan et al., found [here](https://www.tandfonline.com/doi/abs/10.1080/19466315.2018.1462727).
+
+The example we will be working with is the following: suppose we have a study with 5 dose levels to test, each of which has an associated "true" toxicity level and (mean) efficacy. Additionally, we specify an acceptable and unacceptable proportion of dose-limiting toxicities (DLTs). N patients are to be assigned to each dose level. We work with a continuous efficacy outcome and binary toxicity measure.
 
 
-The example we will be working with is the following: suppose we have a study with 5 dose levels to test, each of which has an associated "true" toxicity level and (mean) efficacy. Additionally, we specify an acceptable and unacceptable proportion of dose-limiting toxicities (DLTs). N patients are to be assigned to each dose level. 
 
 ```{r}
 # Number of pre-specified dose levels

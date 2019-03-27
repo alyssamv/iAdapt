@@ -31,7 +31,7 @@
 safe.dose <- function(dose, dose.tox, p1, p2, K, coh.size) {
   
   res         <- tox.profile(dose, dose.tox, p1, p2, K, coh.size)  # save output from tox.profile()
-  alloc.total <- sort(rep(res[,1], coh.size))                      # sort according to dose/cohort size           
+  alloc.total <- sort(rep(res[, 1], coh.size))                      # sort according to dose/cohort size           
   n1          <- nrow(res)*coh.size                                # total number of patients assigned to doses              
   unsafe.dose <- which(res[, 4] <= (1/K))                          # identify which doses are unacceptably toxic
   
