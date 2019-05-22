@@ -3,7 +3,9 @@ title: "README"
 output: html_document
 ---
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
 
 # iAdapt
 R package for early phase adaptive two-stage clinical trial design for toxicity and immunologic outcomes in oncology.
@@ -12,8 +14,7 @@ R package for early phase adaptive two-stage clinical trial design for toxicity 
 
 To install the package, run the following code:
 
-
-```r
+```{r, echo=T, eval=F}
 install.packages("devtools")
 devtools::install_github("alyssamv/iAdapt")
 ```
@@ -42,9 +43,25 @@ This design is relevant in the face of a non-monotonous dose-response relationsh
 
 Often, dose-finding designs rely on a monotone dose-response curve, meaning that as dose increases, we expect the drug's effectiveness to increase too (Fig. 1). This is a convenient assumption, though not always accurate. Instead, a relationship more similar to that shown in Fig. 2 may exist, in which case some dose-escalation designs may falsely move a higher dose forward.
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-2.png)
+```{r}
+eq = function(x){x}
+plot(eq(1:6), type = 'b', yaxt = "n",
+     xlab = "Increasing dose", ylab = "")
+title(main = "Fig. 1: Monotone dose-response relationship",
+     ylab = "Response level", line = 1)
+
+
+eq = function(x){-x^2}
+plot(eq(-3:2), type = 'b', yaxt = "n",
+     xlab = "Increasing dose", ylab = "")
+title(main = "Fig. 2: Non-monotone dose-response relationship",
+     ylab = "Response level", line = 0.5)
+
+```
 
 
 
-
+```{r}
+# knitr::knit(input="./README.Rmd", output = "./README.md")
+```
 
