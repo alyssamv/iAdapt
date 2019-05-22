@@ -32,7 +32,7 @@ LRtox <- function(coh.size, x, p1, p2, K) {
 # Fit a linear model, calculate the randomization probabilities for safe doses 
 # and output the next dose allocation
 
-# y.eff <- vector of all efficacy outcomes for each dose allocation (stage 1)
+# y.eff <- vector of all efficacy outcomes for each dose allocation
 # d.safe <- vector of dose assignment
 
 rand.prob <- function(y.eff, d.safe){
@@ -47,18 +47,18 @@ rand.prob <- function(y.eff, d.safe){
   rp <- fitp/sum(fitp)                                # Calculate randomization prob. for each dose                            
   rp <- ifelse(rp < 0.02, 0.02, rp) 
   
-  rec.dose <- which(rp == max(rp))                      # Next dose with max rand. prob
+  rec.dose <- which(rp==max(rp))                      # Next dose with max rand. prob
   
-  return(list(Rand.Prob = rp, Next.Dose = rec.dose))
+  return(list(Rand.Prob=rp, Next.Dose=rec.dose))
   
 }
 
 #Test
-# y.eff <- c(9,1,0,34,10,27,38,42,60,75,48,62)
-# d.safe <- c(1,1,1,2,2,2,3,3,3,4,4,4)
-# rand.prob(y.eff, d.safe)
+#y.eff <- c(9,1,0,34,10,27,38,42,60,75,48,62)
+#d.safe <- c(1,1,1,2,2,2,3,3,3,4,4,4)
+#rand.prob(y.eff, d.safe)
 
 
-# y.eff <- c(9,1,0,34,10,27,38,42,60,75,48,62,90,89,98,100)
-# d.safe <- c(1,1,1,2,2,2,3,3,3,4,4,4,2,2,3,3)
-# rand.prob(y.eff, d.safe)
+#y.eff <- c(9,1,0,34,10,27,38,42,60,75,48,62,90,89,98,100)
+#d.safe <- c(1,1,1,2,2,2,3,3,3,4,4,4,2,2,3,3)
+#rand.prob(y.eff, d.safe)
