@@ -29,11 +29,16 @@
 
 sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = T, nbb = 100){
   
-  sim.yk <- sim.dk <- matrix(NA, nrow = numsims, ncol = N)    
+  sim.yk <- sim.dk <- matrix(NA, nrow = numsims, ncol = N)
+  sim.doses <- matrix(NA, nrow = numsims, ncol = dose)
   
   for (i in 1:numsims) {  
     
     fstudy.out <- rand.stg2(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule, cohort, samedose, nbb)                  
+    
+    n.safe <- fstudy.out$n1 / coh.size # number of doses declared safe, based on stage 1 sample size
+    sim.doses[i,] <- c(rep(1, n.safe), rep(0, dose - n.safe)) # binary vector for dose safety
+    
     
     if (length(fstudy.out$Y.final) < N) {                           # if max sample size was not reached, fill-in with NAs        
       
@@ -47,5 +52,5 @@ sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, st
     }
     cat(i,"\n")
   }
-  return(list(sim.Y = sim.yk, sim.d = sim.dk))
+  return(list(sim.Y = sim.yk, sim.d = sim.dk, safe.d = sim.doses))
 }
