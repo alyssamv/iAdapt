@@ -16,7 +16,14 @@ library(here)
 
 
 # load data? and source functions 
-here::here("/R/CompleteCode_AdaptImmuno.R")
+source(here::here("R/beta.ab.R"))
+source(here::here("R/eff.stg1.R"))
+source(here::here("R/next.dose.R"))
+source(here::here("R/rand.stg2.R"))
+source(here::here("R/safe.dose.R"))
+source(here::here("R/sim.trials.R"))
+source(here::here("R/tox.profile.R"))
+
 
 
 #################################################
