@@ -9,7 +9,6 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(iAdapt)
 ```
 
 ## Overview 
@@ -43,7 +42,7 @@ coh.size <- 3
 m <- c(5, 15, 40, 65, 80)   # MUST BE THE SAME LENGTH AS dose.tox                  
 
 # Efficacy(equal) variance per dose
-v <- rep(0.01,5) 
+v <- rep(0.01, 5) 
 
 # Total sample size (stages 1&2)                            
 N <- 25                                        
@@ -54,7 +53,7 @@ stop.rule <- 9
 
 Note that, as we've specified them, we have monotone dose-toxicity and dose-response curves, as shown below. If we have a cutoff dose-limiting toxicity (DLT) rate of 0.25, (horizontal dotted line, figure a), then our target dose is dose 4 (green point). Using a likelihood framework, our design should, on average, choose this dose-level with high accuracy.
 
-```{r}
+```{r, echo=F, fig.width=6, fig.height=3}
 par(mfrow = c(1,2))
 plot(x = 1:5, y = dose.tox, ylim = c(0, 0.4),
      type = 'b',
@@ -116,7 +115,31 @@ rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.ru
 
 The complete vectors of dose allocations and efficacy outcomes can be used to compute the operating characteristics of the design in repeated simulations.
  
+To simulate this trial 100 times, we can run the following:
+```{r}
+numsims = 100
 
+set.seed(2)
+simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+
+head(simulations$safe.d)
+```
+
+\$safe.d indicates whether each dose (column) was declared safe in stage 1 (1 = yes, 0 = no) for each trial (row).  
+
+```{r}
+head(simulations$sim.Y)
+head(simulations$sim.d)
+```
+
+\$sim.Y gives the observed outcomes, where each column corresponds to 1 patient (maximum of N columns), and each row is a simulated trial. Correspondingly, \$sim.d gives the dose allocation for each patient (column) in each trial (row). 
+
+To see the rate at which we've designated each dose as safe in stage 1, we can simply take the column totals of the \$safe.d matrix:
+```{r}
+colSums(simulations$safe.d) / numsims
+```
+
+[Need also to show which dose we select as most effective from stage 2 to carry forward into phase II testing.]
 
 
  
@@ -132,7 +155,7 @@ m <- c(15, 35, 80, 60, 40)   # MUST BE THE SAME LENGTH AS dose.tox
 
 Now we have a non-monotone dose-response curves, as shown below. If we have a cutoff toxicity rate of 0.25, (horizontal dotted line, figure a) and assume a monotone dose-response relationship, then we would choose dose level 4 as we did in the previous scenario (red point). However, note that according to the true efficacies of each dose, the lesser dose number 3 is actually best (green point). Assuming a monotone relationship, we would be incorrectly pushing forward a more toxic and less effective dose level. Again using a likelihood framework, our design should, on average, choose dose level 3 with high accuracy.
 
-```{r}
+```{r, echo=F, fig.width=6, fig.height=3}
 par(mfrow = c(1,2))
 plot(x = 1:5, y = dose.tox, ylim = c(0, 0.4),
      type = 'b',
@@ -190,6 +213,30 @@ rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.ru
 The complete vectors of dose allocations and efficacy outcomes can be used to compute the operating characteristics of the design in repeated simulations.
  
  
- 
+ To simulate this trial 100 times, we can run the following:
+```{r}
+numsims = 100
+
+set.seed(1)
+simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+
+head(simulations$safe.d)
+```
+
+\$safe.d indicates whether each dose (column) was declared safe in stage 1 (1 = yes, 0 = no) for each trial (row).  
+
+```{r}
+head(simulations$sim.Y)
+head(simulations$sim.d)
+```
+
+\$sim.Y gives the observed outcomes, where each column corresponds to 1 patient (maximum of N columns), and each row is a simulated trial. Correspondingly, \$sim.d gives the dose allocation for each patient (column) in each trial (row). 
+
+To see the rate at which we've designated each dose as safe in stage 1, we can simply take the column totals of the \$safe.d matrix:
+```{r}
+colSums(simulations$safe.d) / numsims
+```
+
+[Need also to show which dose we select as most effective from stage 2 to carry forward into phase II testing.]
  
  

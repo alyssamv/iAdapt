@@ -1,6 +1,5 @@
 ## ----setup, include=FALSE------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
-library(iAdapt)
 
 ## ------------------------------------------------------------------------
 library(iAdapt)
@@ -25,7 +24,7 @@ coh.size <- 3
 m <- c(5, 15, 40, 65, 80)   # MUST BE THE SAME LENGTH AS dose.tox                  
 
 # Efficacy(equal) variance per dose
-v <- rep(0.01,5) 
+v <- rep(0.01, 5) 
 
 # Total sample size (stages 1&2)                            
 N <- 25                                        
@@ -33,7 +32,7 @@ N <- 25
 # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 stop.rule <- 9   
 
-## ------------------------------------------------------------------------
+## ---- echo=F, fig.width=6, fig.height=3----------------------------------
 par(mfrow = c(1,2))
 plot(x = 1:5, y = dose.tox, ylim = c(0, 0.4),
      type = 'b',
@@ -65,11 +64,26 @@ set.seed(2)
 rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100) 
 
 ## ------------------------------------------------------------------------
+numsims = 100
+
+set.seed(2)
+simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+
+head(simulations$safe.d)
+
+## ------------------------------------------------------------------------
+head(simulations$sim.Y)
+head(simulations$sim.d)
+
+## ------------------------------------------------------------------------
+colSums(simulations$safe.d) / numsims
+
+## ------------------------------------------------------------------------
 # Vector of true mean efficacies per dose (here mean percent persistence per dose)
 m <- c(15, 35, 80, 60, 40)   # MUST BE THE SAME LENGTH AS dose.tox                  
 
 
-## ------------------------------------------------------------------------
+## ---- echo=F, fig.width=6, fig.height=3----------------------------------
 par(mfrow = c(1,2))
 plot(x = 1:5, y = dose.tox, ylim = c(0, 0.4),
      type = 'b',
@@ -102,4 +116,19 @@ eff.stg1(dose = dose, dose.tox = dose.tox, p1 = p_no, p2 = p_yes, K = K, coh.siz
 ## ------------------------------------------------------------------------
 set.seed(1)
 rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100) 
+
+## ------------------------------------------------------------------------
+numsims = 100
+
+set.seed(1)
+simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+
+head(simulations$safe.d)
+
+## ------------------------------------------------------------------------
+head(simulations$sim.Y)
+head(simulations$sim.d)
+
+## ------------------------------------------------------------------------
+colSums(simulations$safe.d) / numsims
 
