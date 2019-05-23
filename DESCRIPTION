@@ -4,7 +4,8 @@ Version: 0.1.0
 Authors@R: person("Alyssa", "Vanderbeek", email = "a.vanderbeek@columbia.edu", role = c("aut", "cre"))
 Description: Functions to simulate results of two-stage adaptive dose-finding design developed by Chiuzan et al. (2018).
 Depends: R (>= 3.5.0),
-        shiny
+        shiny,
+        shinydashboard
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true
