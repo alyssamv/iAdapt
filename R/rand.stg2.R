@@ -21,8 +21,8 @@
 #' @param nbb  binomial parameter (default = 100 cells per patient)
 #' @param N  total sample size for stages 1&2
 #' @param stop.rule  if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info
-#' @param cohort ##########
-#' @param samedose ###########
+#' @param cohort cohort size (number of patients) per dose (Stage 2). Default is 1.
+#' @param samedose designates whether the next patient is allocated to the same dose as the previous patient. Default is TRUE. Function adjusts accordingly.
 #' 
 #' @examples
 #' 
