@@ -3,6 +3,7 @@
 export(beta.ab)
 export(eff.stg1)
 export(rand.stg2)
+export(runExample)
 export(safe.dose)
 export(sim.trials)
 export(tox.profile)
