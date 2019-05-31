@@ -36,7 +36,7 @@ sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, st
     
     fstudy.out <- rand.stg2(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule, cohort, samedose, nbb)                  
     
-    n.safe <- fstudy.out$n1 / coh.size - 1 # number of doses declared safe, based on stage 1 sample size
+    n.safe <- max(fstudy.out$d.final[(fstudy.out$n1 + 1) : length(fstudy.out$d.final)]) # number of doses declared safe, based on stage 1 sample size
     sim.doses[i,] <- c(rep(1, n.safe), rep(0, dose - n.safe)) # binary vector for dose safety
     
     
