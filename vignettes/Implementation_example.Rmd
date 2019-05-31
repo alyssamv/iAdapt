@@ -1,0 +1,63 @@
+---
+title: "Trial implementation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Trial implementation}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Here we demonstrate how to use this package to implement an actual trial. Only two functions are needed; one in each stage.
+
+## Stage 1: likelihood calculation
+
+The first stage requires only the calculation of the likelihood of safety *for each dose*, based on observed DLTs. The function takes as input the cohort size, number of DLTs observed, the acceptable and unacceptable toxicity rates, and the likelihood threshold value (default is 2). This function is used after enrolling each dose.
+
+For example, suppose we have the following data for a dose. Do we escalate to the next dose level, or declare this dose unsafe and move on to stage 2?
+
+```{r}
+library(iAdapt)
+
+# Acceptable (p_yes) and unacceptable (p_no) DLT rates used for establishing safety
+p_no <- 0.40                                     
+p_yes <- 0.15    
+
+# Likelihood-ratio (LR) threshold
+K <- 2                                          
+
+# Cohort size used in stage 1
+coh.size <- 3 
+
+# number of observed DLTs
+x <- 1
+
+```
+
+```{r}
+LRtox(coh.size, x, p_no, p_yes, K)
+```
+
+Based on this data, we would escalate to the next dose. However, if we observed 2 DLTs instead of 1, we would not.
+
+```{r}
+LRtox(coh.size, x = 2, p_no, p_yes, K)
+```
+
+
+## Stage 2: adaptive randomization
+
+Once we have determined which doses are safe, we can move on to stage 2 and begin collecting information about effectiveness. The function at this stage returns the updated randomization probabilities and the dose allocation for the next enrolled patient, based on the observed efficacies up to that point in the trial.
+
+As input, this function requires a vector of observed efficacies and a vector of the corresponding dose levels. 
+
+```{r}
+y.eff <- c(9, 1, 0, 34, 10, 27, 38, 42, 60, 75, 48, 62)
+d.safe <- c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
+rand.prob(y.eff, d.safe)
+```
+
+In this example, the randomization probabilities for doses 1-4 are given by \$Rand.Prob, and the next patient will be enrolled on dose level 4. 
