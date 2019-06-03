@@ -36,9 +36,11 @@ rand.stg2(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9,
 }
 \value{
 List of the following objects:
-       Y.final - vector of all efficacy outcomes (Ys) corresponding to dose assignments (Stages 1&2)
-       d.final - vector of all dose assignments(Stage 1&2)
-If no dose allocation, put NAs in d.final and y.final
+\itemize{
+\item Y.final - vector of all efficacy outcomes (Ys) corresponding to dose assignments (Stages 1&2)
+\item d.final - vector of all dose assignments(Stage 1&2)
+}
+If no dose allocation, put NAs in d.final and y.final.
 }
 \description{
 Function \code{rand.stg2()} fits a linear regression for the continuous efficacy outcomes,
@@ -47,5 +49,32 @@ is considered acceptably safe and has the highest efficacy. Dose safety is still
 that become unacceptable are discarded.
 }
 \examples{
+# Number of pre-specified dose levels
+dose <- 5
+# Vector of true toxicities associated with each dose
+dose.tox <- c(0.05, 0.10, 0.20, 0.35, 0.45)       
+# Acceptable (p_yes) and unacceptable (p_no) DLT rates used for establishing safety
+p_no <- 0.40                                     
+p_yes <- 0.15    
+
+# Likelihood-ratio (LR) threshold
+K <- 2                                          
+
+# Cohort size used in stage 1
+coh.size <- 3 
+
+# Vector of true mean efficacies per dose (here mean percent persistence per dose)
+m <- c(5, 15, 40, 65, 80)   # MUST BE THE SAME LENGTH AS dose.tox                  
+
+# Efficacy(equal) variance per dose
+v <- rep(0.01, 5) 
+
+# Total sample size (stages 1&2)                            
+N <- 25                                        
+
+# Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
+stop.rule <- 9 
+
+rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100) 
 
 }

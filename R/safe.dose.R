@@ -1,12 +1,13 @@
 #' @title Identify safe/acceptable doses  
 #' 
-#' @description Function safe.dose() distinguishes acceptable from unacceptable doses
+#' @description Function \code{safe.dose()} distinguishes acceptable from unacceptable doses
 #' 
 #' @return List of the following objects:
-#'          alloc.safe - matrix of assignments only for acceptable doses (to be used in stage 2) and their 
-#'                       corresponding toxicities
-#'          alloc.total - vector of all dose assignments from stage 1 
-#'          n1 - total number of subjects allocated in stage 1
+#' \itemize{
+#' \item alloc.safe - matrix of assignments only for acceptable doses (to be used in stage 2) and their corresponding toxicities
+#' \item alloc.total - vector of all dose assignments from stage 1 
+#' \item n1 - total number of subjects allocated in stage 1
+#' }
 #'          
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
@@ -23,7 +24,7 @@
 #' K = 2                                         # Likelihood-ratio (LR) threshold
 #' coh.size = 3                                  # Assign 3 pts per dose in stage 1
 #' 
-#' safe.dose()
+#' safe.dose(dose = dose, dose.tox = dose.tox, p1 = p_no, p2 = p_yes, K = K, coh.size = coh.size) 
 #' 
 #' @export
 

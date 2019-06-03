@@ -3,6 +3,8 @@
 #' @description Function \code{LRtox()} calculates the likelihood of safety for a single dose 
 #' and designates whether to escalate to the next dose (safe) or stop dose escalation and move onto stage 2 (unsafe).
 #' 
+#' @return List object that gives the likelihood ratio of safety and indicates whether to escalate to the 
+#' next highest dose level, or stop dose escalation and move onto stage 2.
 #'         
 #' @param x  number of observed DLTs
 #' @param p1  toxicity under null (unsafe DLT rate). Values range from 0 - 1.

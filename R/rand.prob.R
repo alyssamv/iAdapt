@@ -3,13 +3,18 @@
 #' @description Function \code{rand.prob()} calculates the updated randomization probabilities based on observed efficacies up to that point.
 #' It also gives the dose allocation for the next enrolled patient based on these probabilities.
 #' 
+#' @return List object giving
+#' \itemize{
+#' \item Rand.Prob - randomization probability for each safe dose (from stage 1)
+#' \item Next.Dose - the dose to enroll the next patient on
+#' }      
 #'         
 #' @param y.eff vector of all efficacy outcomes for each dose allocation
 #' @param d.safe vector of dose assignment
 #' 
 #' @examples 
-#' y.eff <- c(9,1,0,34,10,27,38,42,60,75,48,62)
-#' d.safe <- c(1,1,1,2,2,2,3,3,3,4,4,4)
+#' y.eff <- c(9, 1, 0, 34, 10, 27, 38, 42, 60, 75, 48, 62)
+#' d.safe <- c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
 #' rand.prob(y.eff, d.safe)
 #' 
 #' @export

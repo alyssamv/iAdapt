@@ -11,13 +11,20 @@ rand.prob(y.eff, d.safe)
 
 \item{d.safe}{vector of dose assignment}
 }
+\value{
+List object giving
+\itemize{
+\item Rand.Prob - randomization probability for each safe dose (from stage 1)
+\item Next.Dose - the dose to enroll the next patient on
+}
+}
 \description{
 Function \code{rand.prob()} calculates the updated randomization probabilities based on observed efficacies up to that point.
 It also gives the dose allocation for the next enrolled patient based on these probabilities.
 }
 \examples{
-y.eff <- c(9,1,0,34,10,27,38,42,60,75,48,62)
-d.safe <- c(1,1,1,2,2,2,3,3,3,4,4,4)
+y.eff <- c(9, 1, 0, 34, 10, 27, 38, 42, 60, 75, 48, 62)
+d.safe <- c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
 rand.prob(y.eff, d.safe)
 
 }
