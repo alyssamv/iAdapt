@@ -21,7 +21,7 @@ here::here("/R/CompleteCode_AdaptImmuno.R")
 
 #################################################
 # Define server logic 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
    
   ## example: set range of x based on user choice
  # output$season_choice <- renderUI({
@@ -84,16 +84,29 @@ d1 <- eventReactive(input$update, {
               dose.tox = dose.tox(),
               p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size) %>% 
     as_tibble() %>% 
-    rename("Dose Assignment" = V1, "Dose Limiting Toxicity Events" = V2, "Cohort" = V3, "Likelihood of Safety" = V4)
+    mutate(logical = ifelse(V4 > (1/input$K), TRUE, FALSE)) %>% 
+    rename("Dose Assignment" = V1, "Dose Limiting Toxicity Events" = V2, "Cohort" = V3, "Likelihood Ratio of Toxicity: 1 trial" = V4)
   }, ignoreNULL = FALSE)
 
-d2 <- eventReactive(input$update, {
+d2 <- eventReactive(input$repeated, {
   set.seed(seed())
-  safe.dose(dose = input$dose, 
+  
+  #--- Show the spinner ---#
+  shinymaterial::material_spinner_show(session, "d2")
+  
+
+  sim.trials(numsims = 1000, #change this to select 
+            dose = input$dose, 
             dose.tox = dose.tox(),
-            p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size)$alloc.safe %>% 
+            p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size,
+            m = m(), v = rep(input$v, input$dose), N = 30)$safe.d %>% 
+    colMeans(.) %>% 
     as_tibble() %>% 
-    rename("Dose" = V1, "Dose Limiting Toxicity Events" = V2)
+    mutate(dose = row_number())
+
+  #--- Hide the spinner ---#
+  shinymaterial::material_spinner_hide(session, "d2")
+  
 }, ignoreNULL = FALSE)
 
 eff <- eventReactive(input$update, {
@@ -109,10 +122,15 @@ eff <- eventReactive(input$update, {
 ##Table outputs##
 
 output$table1 <- DT::renderDataTable({
-    d1 <- d1()
+    d1 <- d1() 
     ###Use package DT to make it nice##
     DT::datatable(d1, rownames = FALSE, 
-                  options = list(paging = FALSE, searching = FALSE, rownames = FALSE))
+                  options = list(paging = FALSE, searching = FALSE, rownames = FALSE,
+                                 columnDefs = list(list(visible=FALSE, targets = 4))))  %>% 
+      formatStyle("logical",
+                    target = 'row',
+                    backgroundColor = styleEqual(c(1, 0), c('#98fb98', '#ffcccb'))
+      )
      })
 
 output$table2 <- DT::renderDataTable({

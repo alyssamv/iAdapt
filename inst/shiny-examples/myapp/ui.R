@@ -157,7 +157,9 @@ shinyUI(fluidPage(
                    step = 0.01),
        helpText("Note: Variance is assumed uniform"),
       #Update Button
-      actionButton("update", "Simulate")
+      actionButton("update", "Simulate"),
+      #Simulate 1000 times
+      actionButton("repeated", "Simulate 1000 times")
     ),
     
     mainPanel(
@@ -166,7 +168,8 @@ shinyUI(fluidPage(
       fluidRow(
         box(title = h4("Selected Efficacy and Toxicities"),
                  plotOutput("plot")),
-        box(title = h4("Simulated Toxicity Profile"), 
+        box(h6("Safe doses are colored green, based on the likelihood ratio from 1 trial simulation and the chosen decision rule."), 
+            title = h4("Simulated Toxicity Profile"), 
                    DT::dataTableOutput("table1"))
                ),
       fluidRow(
