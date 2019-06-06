@@ -1,0 +1,12 @@
+name: twostageadaptive
+title: twostageadaptive
+username:
+account: mimicroc
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 893606
+bundleId: 2104376
+url: https://mimicroc.shinyapps.io/twostageadaptive/
+when: 1558629267.42688
+asMultiple: FALSE
+asStatic: FALSE
