@@ -16,7 +16,13 @@ library(here)
 
 
 # load data? and source functions 
-here::here("/R/CompleteCode_AdaptImmuno.R")
+source(here::here("R/beta.ab.R"))
+source(here::here("R/eff.stg1.R"))
+source(here::here("R/next.dose.R"))
+source(here::here("R/rand.stg2.R"))
+source(here::here("R/safe.dose.R"))
+source(here::here("R/sim.trials.R"))
+source(here::here("R/tox.profile.R"))
 
 
 #################################################
@@ -90,23 +96,17 @@ d1 <- eventReactive(input$update, {
 
 d2 <- eventReactive(input$repeated, {
   set.seed(seed())
-  
-  #--- Show the spinner ---#
-  shinymaterial::material_spinner_show(session, "d2")
-  
 
-  sim.trials(numsims = 1000, #change this to select 
+  sim.trials(numsims = 100, #change this to select 
             dose = input$dose, 
             dose.tox = dose.tox(),
             p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size,
             m = m(), v = rep(input$v, input$dose), N = 30)$safe.d %>% 
     colMeans(.) %>% 
     as_tibble() %>% 
-    mutate(dose = row_number())
+    mutate(Dose = row_number(), value = 100*value) %>% 
+    select(Dose, `Number of Trials for Which Dose was Safe` = value)
 
-  #--- Hide the spinner ---#
-  shinymaterial::material_spinner_hide(session, "d2")
-  
 }, ignoreNULL = FALSE)
 
 eff <- eventReactive(input$update, {

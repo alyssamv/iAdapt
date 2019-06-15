@@ -158,8 +158,8 @@ shinyUI(fluidPage(
        helpText("Note: Variance is assumed uniform"),
       #Update Button
       actionButton("update", "Simulate"),
-      #Simulate 1000 times
-      actionButton("repeated", "Simulate 1000 times")
+      #Simulate 100 times
+      actionButton("repeated", "Simulate 100 times")
     ),
     
     mainPanel(
@@ -173,15 +173,13 @@ shinyUI(fluidPage(
                    DT::dataTableOutput("table1"))
                ),
       fluidRow(
-        box(title = h4("Simulated Safe Doses"),
+        box(title = h4("100-Trial Repeated Simulation"),
                     DT::dataTableOutput("table2")),
         box(title = h4("Estimated Efficacy of Safe Doses"),
             plotlyOutput("plot_safe"))
         )
                   ),
-      tabPanel("Stage 2: Adaptive Randomization"),
-      tabPanel("Repeated Simulation")
-
+      tabPanel("Stage 2: Adaptive Randomization")
     )
   )
 )))
