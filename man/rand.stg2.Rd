@@ -5,7 +5,7 @@
 \title{Stage 2 Adaptive Randomization}
 \usage{
 rand.stg2(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9,
-  cohort = 1, samedose = T, nbb = 100)
+  cohort = 1, samedose = TRUE, nbb = 100)
 }
 \arguments{
 \item{dose}{number of doses to be tested (scalar)}
@@ -75,6 +75,7 @@ N <- 25
 # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 stop.rule <- 9 
 
-rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100) 
+rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, 
+cohort = 1, samedose = TRUE, nbb = 100) 
 
 }

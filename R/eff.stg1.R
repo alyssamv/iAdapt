@@ -1,7 +1,7 @@
 #' @title Generates efficacy outcomes for stage 1
 #' 
-#' @description Function \code{eff.stg1()} uses a beta-binomial distribution to generate outcomes (Ys) corresponding 
-#' to acceptable dose assignments from stage 1. 
+#' @description Function \code{eff.stg1()} uses a beta-binomial distribution to generate 
+#' outcomes (Ys) corresponding to acceptable dose assignments from stage 1. 
 #' 
 #' @return List of efficacy outcomes for subject enrolled during stage 1 (dose-escalation)
 #' \itemize{
@@ -19,7 +19,8 @@
 #' @param p2  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p1 > p2
 #' @param K  threshold for LR. Takes integer values: 1,2,...(recommended K=2)
 #' @param coh.size  cohort size (number of patients) per dose (Stage 1) 
-#' @param m  vector of mean efficacies per dose. Values range from 0 - 100. (e.g, T cell persistence - values b/w 5 and 80 per cent) 
+#' @param m  vector of mean efficacies per dose. Values range from 0 - 100. 
+#' (e.g, T cell persistence - values b/w 5 and 80 per cent) 
 #' @param v  vector of efficacy variances per dose. Values range from 0 - 1. (e.g., 0.01)
 #' @param nbb  binomial parameter (default = 100 cells per patient)
 #' 
@@ -51,7 +52,8 @@
 #' # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 #' stop.rule <- 9 
 #' 
-#' eff.stg1(dose = dose, dose.tox = dose.tox, p1 = p_no, p2 = p_yes, K = K, coh.size = coh.size, m, v, nbb = 100)
+#' eff.stg1(dose = dose, dose.tox = dose.tox, p1 = p_no, p2 = p_yes, K = K, 
+#' coh.size = coh.size, m, v, nbb = 100)
 #' 
 #' @export
 

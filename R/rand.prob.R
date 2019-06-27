@@ -17,11 +17,12 @@
 #' d.safe <- c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
 #' rand.prob(y.eff, d.safe)
 #' 
+#' @import stats
 #' @export
 
 rand.prob <- function(y.eff, d.safe){
   
-  reg <- lm(log(y.eff + 1) ~ factor(d.safe))         # Linear model with log(Y) for accept. doses 
+  reg <- stats::lm(log(y.eff + 1) ~ factor(d.safe))         # Linear model with log(Y) for accept. doses 
   fit <- as.vector(reg$fitted.values)                # Fitted values for Y
   fitp <- exp(fit)
   

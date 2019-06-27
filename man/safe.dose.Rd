@@ -38,6 +38,6 @@ p2 = 0.15                                     # Acceptable DLT rate
 K = 2                                         # Likelihood-ratio (LR) threshold
 coh.size = 3                                  # Assign 3 pts per dose in stage 1
 
-safe.dose(dose = dose, dose.tox = dose.tox, p1 = p_no, p2 = p_yes, K = K, coh.size = coh.size) 
+safe.dose(dose = dose, dose.tox = dose.tox, p1 = p1, p2 = p2, K = K, coh.size = coh.size) 
 
 }

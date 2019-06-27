@@ -17,9 +17,9 @@
 #' dose <- 5
 #' # Vector of true toxicities associated with each dose
 #' dose.tox <- c(0.05, 0.10, 0.20, 0.35, 0.45)       
-#' # Acceptable (p_yes) and unacceptable (p_no) DLT rates used for establishing safety
-#' p_no <- 0.40                                     
-#' p_yes <- 0.15    
+#' # Acceptable (p2) and unacceptable (p1) DLT rates used for establishing safety
+#' p1 <- 0.40                                     
+#' p2 <- 0.15    
 #' 
 #' # Likelihood-ratio (LR) threshold
 #' K <- 2                                          
@@ -39,7 +39,7 @@
 #' # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 #' stop.rule <- 9 
 #' 
-#' tox.profile(dose = dose, dose.tox = dose.tox, p1 = p_no, p2 = p_yes, K = K, coh.size = coh.size)
+#' tox.profile(dose = dose, dose.tox = dose.tox, p1 = p1, p2 = p2, K = K, coh.size = coh.size)
 #' 
 #' 
 #' @export

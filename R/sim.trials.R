@@ -51,12 +51,13 @@
 #' # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 #' stop.rule <- 9 
 #' 
-#' sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+#' sim.trials(numsims = 10, dose, dose.tox, p1 = p_no, p2 = p_yes, K, 
+#' coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100)
 #' 
 #' @export
 
 
-sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = T, nbb = 100){
+sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = TRUE, nbb = 100){
   
   sim.yk <- sim.dk <- matrix(NA, nrow = numsims, ncol = N)
   sim.doses <- matrix(NA, nrow = numsims, ncol = dose)
