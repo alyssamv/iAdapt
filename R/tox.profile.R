@@ -1,8 +1,9 @@
 #' @title Generates DLTs and calculate the likelihood-ratio (LR) for each dose
 #' 
-#' @description Returns a 4-column matrix containing dose assignment, DLTs at each dose, cohort number, and LR
+#' @description Gives toxicity profile (number of dose-limiting toxicities) and likelihood ratio of safety for each dose.
 #' 
-#' @return 4-column matrix containing dose assign., DLTs at each dose, cohort number, and LR # This is the same is descripton above. Keep only one?
+#' @return 4-column matrix containing dose assignment, dose-limiting toxicities at each dose, 
+#' cohort number, and likelihood ratio.
 #' 
 #' @param dose  number of doses to be tested (scalar)
 #' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
@@ -12,13 +13,35 @@
 #' @param coh.size  cohort size (number of patients) per dose (Stage 1) 
 #' 
 #' @examples
-#' dose = 5                                      # Dose levels
-#' dose.tox <- c(0.05, 0.10, 0.15, 0.20, 0.30)   # True toxicity per dose
-#' p1 = 0.40                                     # Unacceptable DLT rate
-#' p2 = 0.15                                     # Acceptable DLT rate
-#' K = 2                                         # Likelihood-ratio (LR) threshold
-#' coh.size = 3                                  # Assign 3 pts per dose in stage 1
-
+#' # Number of pre-specified dose levels
+#' dose <- 5
+#' # Vector of true toxicities associated with each dose
+#' dose.tox <- c(0.05, 0.10, 0.20, 0.35, 0.45)       
+#' # Acceptable (p2) and unacceptable (p1) DLT rates used for establishing safety
+#' p1 <- 0.40                                     
+#' p2 <- 0.15    
+#' 
+#' # Likelihood-ratio (LR) threshold
+#' K <- 2                                          
+#' 
+#' # Cohort size used in stage 1
+#' coh.size <- 3 
+#' 
+#' # Vector of true mean efficacies per dose (here mean percent persistence per dose)
+#' m <- c(5, 15, 40, 65, 80)   # MUST BE THE SAME LENGTH AS dose.tox                  
+#' 
+#' # Efficacy(equal) variance per dose
+#' v <- rep(0.01, 5) 
+#' 
+#' # Total sample size (stages 1&2)                            
+#' N <- 25                                        
+#' 
+#' # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
+#' stop.rule <- 9 
+#' 
+#' tox.profile(dose = dose, dose.tox = dose.tox, p1 = p1, p2 = p2, K = K, coh.size = coh.size)
+#' 
+#' 
 #' @export
  
 tox.profile <- function(dose, dose.tox, p1, p2, K, coh.size){ 

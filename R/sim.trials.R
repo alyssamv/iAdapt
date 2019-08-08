@@ -3,8 +3,10 @@
 #' @description Results are displayed in a matrix format, where each row represents one trial simulation  
 #' 
 #' @return List of the following objects:
-#'           sim.Y - estimated efficacy per each dose assignment 
-#'           sim.d - dose assignment for each patient in the trial 
+#' \itemize{
+#' \item sim.Y - estimated efficacy per each dose assignment 
+#' \item sim.d - dose assignment for each patient in the trial 
+#' }
 #'         
 #'          
 #' @param numsims  number of simulated trials
@@ -19,15 +21,43 @@
 #' @param nbb  binomial parameter (default = 100 cells per patient)
 #' @param N  total sample size for stages 1&2
 #' @param stop.rule  if only dose 1 safe, allocate up to 9 (default) patients at dose 1 to collect more info
-#' @param cohort ############
-#' @param samedose ##########
+#' @param cohort cohort size (number of patients) per dose (Stage 2). Default is 1.
+#' @param samedose designates whether the next patient is allocated to the same dose as the previous patient. Default is TRUE. Function adjusts accordingly.
 #' 
 #' @examples
+#' # Number of pre-specified dose levels
+#' dose <- 5
+#' # Vector of true toxicities associated with each dose
+#' dose.tox <- c(0.05, 0.10, 0.20, 0.35, 0.45)       
+#' # Acceptable (p_yes) and unacceptable (p_no) DLT rates used for establishing safety
+#' p_no <- 0.40                                     
+#' p_yes <- 0.15    
+#' 
+#' # Likelihood-ratio (LR) threshold
+#' K <- 2                                          
+#' 
+#' # Cohort size used in stage 1
+#' coh.size <- 3 
+#' 
+#' # Vector of true mean efficacies per dose (here mean percent persistence per dose)
+#' m <- c(5, 15, 40, 65, 80)   # MUST BE THE SAME LENGTH AS dose.tox                  
+#' 
+#' # Efficacy(equal) variance per dose
+#' v <- rep(0.01, 5) 
+#' 
+#' # Total sample size (stages 1&2)                            
+#' N <- 25                                        
+#' 
+#' # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
+#' stop.rule <- 9 
+#' 
+#' sim.trials(numsims = 10, dose, dose.tox, p1 = p_no, p2 = p_yes, K, 
+#' coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100)
 #' 
 #' @export
 
 
-sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = T, nbb = 100){
+sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 9, cohort = 1, samedose = TRUE, nbb = 100){
   
   sim.yk <- sim.dk <- matrix(NA, nrow = numsims, ncol = N)
   sim.doses <- matrix(NA, nrow = numsims, ncol = dose)
@@ -36,7 +66,7 @@ sim.trials <- function(numsims, dose, dose.tox, p1, p2, K, coh.size, m, v, N, st
     
     fstudy.out <- rand.stg2(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule, cohort, samedose, nbb)                  
     
-    n.safe <- fstudy.out$n1 / coh.size # number of doses declared safe, based on stage 1 sample size
+    n.safe <- max(fstudy.out$d.final[(fstudy.out$n1 + 1) : length(fstudy.out$d.final)], na.rm = T) # number of doses declared safe, based on stage 1 sample size
     sim.doses[i,] <- c(rep(1, n.safe), rep(0, dose - n.safe)) # binary vector for dose safety
     
     

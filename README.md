@@ -1,6 +1,3 @@
-
-
-
 # iAdapt
 R package for early phase adaptive two-stage clinical trial design for toxicity and immunologic outcomes in oncology.
 
@@ -36,11 +33,4 @@ This design is relevant in the face of a non-monotonous dose-response relationsh
 
 ### Dose-response relationship 
 
-Often, dose-finding designs rely on a monotone dose-response curve, meaning that as dose increases, we expect the drug's effectiveness to increase too (Fig. 1). This is a convenient assumption, though not always accurate. Instead, a relationship more similar to that shown in Fig. 2 may exist, in which case some dose-escalation designs may falsely move a higher dose forward.
-
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-2.png)
-
-
-
-
-
+Often, dose-finding designs rely on a monotone dose-response curve, meaning that as dose increases, we expect the drug's effectiveness to increase too. This is a convenient assumption, though not always accurate. Instead, a relationship may exist in which case some dose-escalation designs may falsely move a higher dose forward.

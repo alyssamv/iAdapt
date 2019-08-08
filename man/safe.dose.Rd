@@ -21,13 +21,14 @@ safe.dose(dose, dose.tox, p1, p2, K, coh.size)
 }
 \value{
 List of the following objects:
-         alloc.safe - matrix of assignments only for acceptable doses (to be used in stage 2) and their 
-                      corresponding toxicities
-         alloc.total - vector of all dose assignments from stage 1 
-         n1 - total number of subjects allocated in stage 1
+\itemize{
+\item alloc.safe - matrix of assignments only for acceptable doses (to be used in stage 2) and their corresponding toxicities
+\item alloc.total - vector of all dose assignments from stage 1 
+\item n1 - total number of subjects allocated in stage 1
+}
 }
 \description{
-Function safe.dose() distinguishes acceptable from unacceptable doses
+Function \code{safe.dose()} distinguishes acceptable from unacceptable doses
 }
 \examples{
 dose = 5                                      # Dose levels
@@ -37,6 +38,6 @@ p2 = 0.15                                     # Acceptable DLT rate
 K = 2                                         # Likelihood-ratio (LR) threshold
 coh.size = 3                                  # Assign 3 pts per dose in stage 1
 
-safe.dose()
+safe.dose(dose = dose, dose.tox = dose.tox, p1 = p1, p2 = p2, K = K, coh.size = coh.size) 
 
 }

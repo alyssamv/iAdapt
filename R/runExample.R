@@ -1,4 +1,11 @@
+#' @title Launch Shiny app
+#' 
+#' @description Launch Shiny app 
+#' 
+#' @import shiny shinydashboard
 #' @export
+#' 
+#' 
 runExample <- function() {
   appDir <- system.file("shiny-examples", "myapp", package = "iAdapt")
   if (appDir == "") {

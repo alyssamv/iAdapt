@@ -81,8 +81,12 @@ dose <- eventReactive(input$update, {
 })
   
 ##Creating datatables##
-  
+seed <- eventReactive(input$update,{
+  rpois(1, 100000)
+})
+
 d1 <- eventReactive(input$update, {
+  set.seed(seed())
   tox.profile(dose = input$dose, 
               dose.tox = dose.tox(),
               p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size) %>% 
@@ -91,6 +95,7 @@ d1 <- eventReactive(input$update, {
   }, ignoreNULL = FALSE)
 
 d2 <- eventReactive(input$update, {
+  set.seed(seed())
   safe.dose(dose = input$dose, 
             dose.tox = dose.tox(),
             p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size)$alloc.safe %>% 
@@ -99,6 +104,7 @@ d2 <- eventReactive(input$update, {
 }, ignoreNULL = FALSE)
 
 eff <- eventReactive(input$update, {
+  set.seed(seed())
   eff.stg1(dose = input$dose, 
                 dose.tox = dose.tox(),
                 p1 = input$p_no, p2 = input$p_yes, K = input$K, coh.size = input$coh.size, 
