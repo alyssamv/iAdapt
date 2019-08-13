@@ -65,7 +65,7 @@ sim.summary <- function(sims){
   dose.IQR = round(est.dose1*100, 1)
   
   print(knitr::kable(dose.IQR, 
-                     caption = "Percent of subjects treated on each dose level",
+                     caption = "Percent allocation per dose level",
                      col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
   
   
@@ -84,7 +84,7 @@ sim.summary <- function(sims){
   Y = est.pers1[-1, ]
   
   print(knitr::kable(Y, 
-                     caption = "Efficacy at each dose level",
+                     caption = "Estimated efficacy per dose level",
                      col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
   
   
