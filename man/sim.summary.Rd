@@ -46,9 +46,9 @@ N <- 25
 # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 stop.rule <- 9 
 
-simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p1, p2 = p2, K, 
-coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+simulations = sim.trials(numsims = 100, dose, dose.tox, p1 = p_no, p2 = p_yes, K, 
+coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100)
 
-summary = sim.simmary(simulations)
+summary = sim.summary(simulations)
  
 }
