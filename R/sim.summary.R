@@ -37,10 +37,10 @@
 #' # Stopping rule: if dose 1 is the only safe dose, allocate up to 9 pts.
 #' stop.rule <- 9 
 #' 
-#' simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p1, p2 = p2, K, 
-#' coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+#' simulations = sim.trials(numsims = 100, dose, dose.tox, p1 = p_no, p2 = p_yes, K, 
+#' coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100)
 #' 
-#' summary = sim.simmary(simulations)
+#' summary = sim.summary(simulations)
 #'  
 #' @export
 #' 
@@ -56,7 +56,7 @@ sim.summary <- function(sims){
   dose.mat.a <- matrix(NA, nrow(sim.doses), n.doses)
   for (i in 1:nrow(sim.doses)) {     
     dose.no.na <- na.omit(sim.doses[i, ])   
-    dose.mat.a[i, ] <- table(factor(dose.no.na,lev = 1:n.doses))/length(dose.no.na)       
+    dose.mat.a[i, ] <- table(factor(dose.no.na, levels = 1:n.doses))/length(dose.no.na)       
   }
   est.dose1 <- matrix(NA, n.doses, 4) 
   for (j in 1:n.doses) {
@@ -64,9 +64,9 @@ sim.summary <- function(sims){
   }
   dose.IQR = round(est.dose1*100, 1)
   
-  print(dose.IQR %>%
-          knitr::kable(caption = "Percent of subjects treated on each dose level",
-                       col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
+  print(knitr::kable(dose.IQR, 
+                     caption = "Percent of subjects treated on each dose level",
+                     col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
   
   
   ## IQR of persistence (columns) for each dose (rows)
@@ -83,9 +83,9 @@ sim.summary <- function(sims){
   
   Y = est.pers1[-1, ]
   
-  print(Y %>%
-          knitr::kable(caption = "Efficacy at each dose level",
-                       col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
+  print(knitr::kable(Y, 
+                     caption = "Efficacy at each dose level",
+                     col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
   
   
   return(list(pct.treated = dose.IQR, efficacy = Y))

@@ -10,8 +10,7 @@ Maintainer: Alyssa Vanderbeek <amv2187@cumc.columbia.edu>
 Description: Functions to simulate results of two-stage adaptive dose-finding design developed by Chiuzan et al. (2018).
 Depends: R (>= 3.5.0),
         shiny,
-        shinydashboard,
-        tidyverse
+        shinydashboard
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true

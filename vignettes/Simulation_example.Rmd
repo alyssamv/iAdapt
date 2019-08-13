@@ -116,7 +116,7 @@ If 2 or more doses are considered acceptable after stage 1, the remaining patien
 Function to fit a linear regression for the continuous efficacy outcomes, compute the randomization probabilities per dose and allocate the next subject to an acceptable safe dose that has the highest randomization probability:
 ```{r}
 set.seed(3)
-rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100) 
+rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100) 
 ```
 
 Notice that after stage 1 (dose 5, efficacy value 85), patients were randomized only to dose 4 or lower (acceptably safe).
@@ -127,7 +127,7 @@ To simulate this trial 100 times, we can run the following:
 numsims = 100
 
 set.seed(3)
-simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100)
 ```
 
 \$safe.d indicates whether each dose (column) was declared safe in stage 1 (1 = yes, 0 = no) for each trial (row).  
@@ -217,7 +217,7 @@ Function to fit a linear regression for the continuous efficacy outcomes, comput
 
 ```{r}
 set.seed(1)
-rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100) 
+rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100) 
 ```
 
 Notice that after stage 1 (dose 4, efficacy value 79), patients were randomized to only to dose 3 orlower (acceptably safe).
@@ -230,7 +230,7 @@ The complete vectors of dose allocations and efficacy outcomes can be used to co
 numsims = 100
 
 set.seed(1)
-simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = T, nbb = 100)
+simulations = sim.trials(numsims = numsims, dose, dose.tox, p1 = p_no, p2 = p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, cohort = 1, samedose = TRUE, nbb = 100)
 ```
 
 \$safe.d indicates whether each dose (column) was declared safe in stage 1 (1 = yes, 0 = no) for each trial (row).  
