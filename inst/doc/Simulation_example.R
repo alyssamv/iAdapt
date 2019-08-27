@@ -1,5 +1,5 @@
 ## ----setup, include=FALSE------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ## ------------------------------------------------------------------------
 library(iAdapt)
@@ -46,6 +46,8 @@ plot(x = 1:5, y = m, ylim = c(0, 100),
      xlab = "Dose level", ylab = "True efficacy (T-cell % persistence)",
      main = "(b) Dose-efficacy")
 points(x = 4, y = m[4], pch = 15, col = "green") # highlight best dose
+
+dev.off()
 
 ## ------------------------------------------------------------------------
 set.seed(3)
@@ -102,6 +104,7 @@ plot(x = 1:5, y = m, ylim = c(0, 100),
 points(x = 3, y = m[3], pch = 15, col = "green") # highlight best dose
 points(x = 4, y = m[4], pch = 15, col = "red") # highlight MTD
 
+dev.off()
 
 ## ------------------------------------------------------------------------
 set.seed(1)
