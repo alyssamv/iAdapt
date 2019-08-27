@@ -90,7 +90,7 @@ rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 
   
   if (nd > 1) {                                               # If 2 or more doses are accept. after stage 1, enter stage 2
     
-    coh.toxk <- cbind(matrix(dk.safe, ncol = coh.size, byrow = T)[,1], toxk) # Matrix of safe dose assign. and tox. to be used for LR
+    coh.toxk <- cbind(matrix(dk.safe, ncol = coh.size, byrow = TRUE)[,1], toxk) # Matrix of safe dose assign. and tox. to be used for LR
     
     for (k in 1:nmore) {
       
@@ -100,7 +100,7 @@ rand.stg2 <- function(dose, dose.tox, p1, p2, K, coh.size, m, v, N, stop.rule = 
         fit <- as.vector(reg$fitted.values)                   # Fitted values for Y
         dose.unique <- duplicated(dk.safe)
         fitp <- exp(fit) 
-        fitp <- fitp[dose.unique == F]
+        fitp <- fitp[dose.unique == FALSE]
         #fitp <- ifelse(fitp > 100, 100, fitp)                 # Restrict values - %persistence can only be b/w 0 and 1
         #fitp <- ifelse(fitp < 0, 0, fitp)                              
         rp <- fitp/sum(fitp)                                  # Calculate randomization prob. for each dose

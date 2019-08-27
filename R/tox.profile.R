@@ -69,5 +69,5 @@ tox.profile <- function(dose, dose.tox, p1, p2, K, coh.size){
       i <- i + 1	 
     
   }       
-  return(matrix(x, ncol = 4, byrow = T))
+  return(matrix(x, ncol = 4, byrow = TRUE))
 } 
