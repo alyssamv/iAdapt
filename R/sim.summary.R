@@ -48,7 +48,7 @@
 
 sim.summary <- function(sims){
   sim.doses = sims$sim.d
-  n.doses = max(sim.doses, na.rm = T)
+  n.doses = max(sim.doses, na.rm = TRUE)
   
   sim.eff = sims$sim.Y
   
@@ -60,7 +60,7 @@ sim.summary <- function(sims){
   }
   est.dose1 <- matrix(NA, n.doses, 4) 
   for (j in 1:n.doses) {
-    est.dose1[j, ] <- c(j/100, quantile(dose.mat.a[, j], prob = c(0.25, 0.5, 0.75), na.rm = T))	
+    est.dose1[j, ] <- c(j/100, quantile(dose.mat.a[, j], prob = c(0.25, 0.5, 0.75), na.rm = TRUE))	
   }
   dose.IQR = round(est.dose1*100, 1)
   
@@ -78,7 +78,7 @@ sim.summary <- function(sims){
   }
   est.pers1 <- matrix(NA, (n.doses + 1), 4)  
   for (j in 1:(n.doses + 1)) {
-    est.pers1[j, ] <- c((j - 1), quantile(pers.hat.a[,j], prob = c(0.25, 0.5, 0.75), na.rm = T))
+    est.pers1[j, ] <- c((j - 1), quantile(pers.hat.a[,j], prob = c(0.25, 0.5, 0.75), na.rm = TRUE))
   }
   
   Y = est.pers1[-1, ]

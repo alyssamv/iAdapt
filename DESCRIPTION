@@ -1,6 +1,6 @@
 Package: iAdapt
 Type: Package
-Title: Two-stage adaptive dose-finding clinical trial design
+Title: Two-Stage Adaptive Dose-Finding Clinical Trial Design
 Version: 0.1.0
 Authors@R: c(
     person("Alyssa", "Vanderbeek", email = "amv2187@cumc.columbia.edu", role = c("aut", "cre")),
@@ -8,7 +8,7 @@ Authors@R: c(
     person("Cody", "Chiuzan", email = "cc3780@cumc.columbia.edu", role = "ctb"),
     person("Elizabeth", "Garrett-Mayer", email = "liz.garrett-mayer@asco.org", role = "ctb"))
 Maintainer: Alyssa Vanderbeek <amv2187@cumc.columbia.edu>
-Description: Functions to simulate results of two-stage adaptive dose-finding design developed by Chiuzan et al. (2018).
+Description: Simulate and implement early phase two-stage adaptive dose-finding design developed by Chiuzan et al. (2018) <DOI:10.1080/19466315.2018.1462727>.
 Depends: R (>= 3.5.0),
         shiny,
         shinydashboard

@@ -14,7 +14,7 @@ devtools::install_github("alyssamv/iAdapt")
 
 ## Overview
 
-This package provides software based on the early phase trial design by [Chiuzan et al. (2018)](https://www.tandfonline.com/doi/abs/10.1080/19466315.2018.1462727). Stage 1 is safety-driven dose-escalation, and Stage 2 employs efficacy-driven randomization while continuing to monitor dose safety.
+This package provides software based on the early phase trial design by [Chiuzan et al. (2018)](https://www.tandfonline.com/doi/abs/10.1080/19466315.2018.1462727) <DOI:10.1080/19466315.2018.1462727>. Stage 1 is safety-driven dose-escalation, and Stage 2 employs efficacy-driven randomization while continuing to monitor dose safety.
 
 The design uses a likelihood paradigm, rather than rules. e.g. In Stage 1, when the likelihood ratio for a dose is greater than a prespecified threshold, the dose is considered acceptably safe and subsequent patients are enrolled on the next dose level. Conversely, if the likelihood ratio is less than or equal to the threshold, escalation is stopped. 
 
