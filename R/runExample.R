@@ -6,6 +6,9 @@
 #' @export
 #' 
 #' 
+#' @keywords internal
+
+
 runExample <- function() {
   appDir <- system.file("shiny-examples", "myapp", package = "iAdapt")
   if (appDir == "") {
