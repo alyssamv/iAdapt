@@ -9,3 +9,4 @@ runExample()
 \description{
 Launch Shiny app
 }
+\keyword{internal}
