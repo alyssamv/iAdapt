@@ -4,7 +4,7 @@
 \alias{sim.summary}
 \title{Visualize simulation results}
 \usage{
-sim.summary(sims)
+sim.summary(sims, print = TRUE)
 }
 \arguments{
 \item{sims}{output from sim.trials}

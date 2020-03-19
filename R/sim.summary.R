@@ -46,47 +46,47 @@
 #' 
 
 
-sim.summary <- function(sims){
+sim.summary <- function(sims, print = TRUE){
   sim.doses = sims$sim.d
   n.doses = max(sim.doses, na.rm = TRUE)
-  
   sim.eff = sims$sim.Y
-  
-  ## columns are IQR for percent of patients treated on each dose
   dose.mat.a <- matrix(NA, nrow(sim.doses), n.doses)
-  for (i in 1:nrow(sim.doses)) {     
-    dose.no.na <- na.omit(sim.doses[i, ])   
-    dose.mat.a[i, ] <- table(factor(dose.no.na, levels = 1:n.doses))/length(dose.no.na)       
+  for (i in 1:nrow(sim.doses)) {
+    dose.no.na <- na.omit(sim.doses[i, ])
+    dose.mat.a[i, ] <- table(factor(dose.no.na, levels = 1:n.doses))/length(dose.no.na)
   }
-  est.dose1 <- matrix(NA, n.doses, 4) 
+  est.dose1 <- matrix(NA, n.doses, 5)
+  
   for (j in 1:n.doses) {
-    est.dose1[j, ] <- c(j/100, quantile(dose.mat.a[, j], prob = c(0.25, 0.5, 0.75), na.rm = TRUE))	
+    est.dose1[j, ] <- c(j/100, 
+                        quantile(dose.mat.a[, j], 
+                                 prob = c(0.25, 0.5, 0.75), na.rm = TRUE),
+                        round(mean(dose.mat.a[, j]), 2))
   }
-  dose.IQR = round(est.dose1*100, 1)
+  dose.IQR = round(est.dose1 * 100, 1)
   
-  print(knitr::kable(dose.IQR, 
-                     caption = "Percent allocation per dose level",
-                     col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
-  
-  
-  ## IQR of persistence (columns) for each dose (rows)
-  pers.hat.a <- matrix(NA, nrow(sim.eff), n.doses + 1)                                     # Median 
+  pers.hat.a <- matrix(NA, nrow(sim.eff), n.doses + 1)
   for (i in 1:nrow(sim.eff)) {
     for (j in 1:(n.doses + 1)) {
-      pers.hat.a[i,j] <- (median(sim.eff[i, sim.doses[i, ] == j - 1]))
+      pers.hat.a[i, j] <- (median(sim.eff[i, sim.doses[i, 
+                                                       ] == j - 1]))
     }
   }
-  est.pers1 <- matrix(NA, (n.doses + 1), 4)  
+  est.pers1 <- matrix(NA, (n.doses + 1), 5)
   for (j in 1:(n.doses + 1)) {
-    est.pers1[j, ] <- c((j - 1), quantile(pers.hat.a[,j], prob = c(0.25, 0.5, 0.75), na.rm = TRUE))
+    est.pers1[j, ] <- c((j - 1), 
+                        quantile(pers.hat.a[, j], 
+                                 prob = c(0.25, 0.5, 0.75), na.rm = TRUE),
+                        round(mean(pers.hat.a[, j]), 2))
   }
-  
   Y = est.pers1[-1, ]
   
-  print(knitr::kable(Y, 
-                     caption = "Estimated efficacy per dose level",
-                     col.names = c("Dose", "25th percentile", "Median", "75th percentile")))
-  
+  if (print == TRUE) {
+    print(knitr::kable(dose.IQR, caption = "Percent allocation per dose level", 
+                       col.names = c("Dose", "25th percentile", "Median", "75th percentile", "Mean")))
+    print(knitr::kable(Y, caption = "Estimated efficacy per dose level", 
+                       col.names = c("Dose", "25th percentile", "Median", "75th percentile", "Mean")))
+  }
   
   return(list(pct.treated = dose.IQR, efficacy = Y))
 }
