@@ -14,7 +14,6 @@
 #' 
 #'         
 #' @param dose  number of doses to be tested (scalar)
-#' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
 #' @param p1  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
 #' @param p2  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p1 > p2
 #' @param K  threshold for LR. Takes integer values: 1,2,...(recommended K=2)
@@ -75,7 +74,7 @@
 #'                       0.005, 0.052, 0.224, 0.372, 0.347),
 #'                     nrow = 6, byrow = TRUE)
 #' 
-#' eff.stg1.nTTP(dose = dose, dose.tox = dose.tox, p1 = p1, p2 = p2, K = K, coh.size = coh.size, nbb = 100, W = W, TOX = TOX, ntox = ntox) 
+#' eff.stg1.nTTP(dose = dose, p1 = p1, p2 = p2, K = K, coh.size = coh.size, nbb = 100, W = W, TOX = TOX, ntox = ntox) 
 #' 
 #' 
 #' @export

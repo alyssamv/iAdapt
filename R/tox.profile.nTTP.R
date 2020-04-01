@@ -61,7 +61,7 @@
 #'                       0.005, 0.052, 0.224, 0.372, 0.347),
 #'                     nrow = 6, byrow = TRUE)
 #' 
-#' tox.profile(dose = dose, p1 = p1, p2 = p2, K = K, coh.size = coh.size, ntox = ntox, W = W, TOX = TOX)
+#' tox.profile.nTTP(dose = dose, p1 = p1, p2 = p2, K = K, coh.size = coh.size, ntox = ntox, W = W, TOX = TOX)
 #' 
 #' 
 #' @export

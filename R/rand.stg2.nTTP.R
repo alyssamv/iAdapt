@@ -13,7 +13,6 @@
 #' If no dose allocation, put NAs in d.final and y.final.
 #' 
 #' @param dose  number of doses to be tested (scalar)
-#' @param dose.tox  vector of true toxicities for each dose. Values range from 0 - 1.
 #' @param p1  toxicity under null (unsafe DLT rate). Values range from 0 - 1.
 #' @param p2  toxicity under alternative (safe DLT rate). Values range from 0 - 1; p1 > p2
 #' @param K  threshold for LR. Takes integer values: 1,2,...(recommended K=2)
@@ -76,7 +75,8 @@
 #'                       0.005, 0.052, 0.224, 0.372, 0.347),
 #'                     nrow = 6, byrow = TRUE)
 #' 
-#' rand.stg2(dose, dose.tox, p_no, p_yes, K, coh.size, m, v, N, stop.rule = stop.rule, 
+#' rand.stg2.nTTP(dose = dose, p1 = p_no, p2 = p_yes, K = K, coh.size = coh.size, 
+#' m = m, v = v, N = N, stop.rule = stop.rule, 
 #' cohort = 1, samedose = TRUE, nbb = 100, W = W, TOX = TOX, ntox = ntox) 
 #' 
 #' @export
