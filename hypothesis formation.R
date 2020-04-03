@@ -1,6 +1,5 @@
 
-source(file.path(getwd(), "perdose source fns.R"))
-
+# Function to write th efunction that calculates all possible nTTP from weight matrix W
 nTTP.calc.fn <- function(ntox, W, grade.thresh){
   hyp.plot = "function(){
 W = cbind(rep(0, ntox), W)
@@ -42,9 +41,7 @@ tt = list(h2 = c(), h1 = c()) \n
   return(fn)
 }
 
-
-
-
+# Function that calls nTTP.calc.fn, plots distributions, and gives suggested hypothesis values
 nTTP.hypothesis <- function(ntox, W, grade.thresh){
   
   ### Calculate all possible nTTP values ###
@@ -66,18 +63,25 @@ nTTP.hypothesis <- function(ntox, W, grade.thresh){
   return(list(suggested.H = sug, all.nTTP = tt))
 }
 
+
+
+
+###################################################
+#####################Examples######################
+###################################################
+
 ntox <- 3 #Number of unique toxicities
 grade.thresh = c(4, 4, 4)
 #### Define the weight Matrix ####
-W <- matrix(c(0.5, 0.75, 1.0, 1.5, # Burden weight for grades 1-4 for toxicity 1
-              0.5, 0.75, 1.0, 1.5, # Burden weight for grades 1-4 for toxicity 2
-              0.00, 0.00, 0.5, 1), ## Burden weight for grades 1-4 for toxicity 3
+W <- matrix(c(0.50, 0.75, 1.00, 1.50, # Burden weight for grades 1-4 for toxicity 1
+              0.50, 0.75, 1.00, 1.50, # Burden weight for grades 1-4 for toxicity 2
+              0.00, 0.00, 0.50, 1.00), ## Burden weight for grades 1-4 for toxicity 3
             nrow = ntox, byrow = T)
 
 ok = nTTP.hypothesis(ntox, W, grade.thresh)
 
-W <- matrix(c(0.1, 0.35, 0.7, 1.00, #Burden weight for grades 1-4 for toxicity 1
-              0.08, 0.23,  0.6, 0.80, #Burden weight for grades 1-4 for toxicity 2
+W <- matrix(c(0.10, 0.35, 0.70, 1.00, #Burden weight for grades 1-4 for toxicity 1
+              0.08, 0.23, 0.60, 0.80, #Burden weight for grades 1-4 for toxicity 2
               0.00, 0.15, 0.45, 0.80), ##Burden weight for grades 1-4 for toxicity 3
             nrow = ntox, byrow = T)
 
