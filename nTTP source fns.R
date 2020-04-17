@@ -72,9 +72,9 @@ dlt.prob <- function(TOX, ntox, grade.thresh){
 }
 
 
-# Functions to get hypotheses
-# Function to write th efunction that calculates all possible nTTP from weight matrix W
-# grade.thresh is a vector of the grade at which each toxicity type qualifies as a DLT
+# Function to write the function that calculates all possible nTTP from weight matrix W
+# grade.thresh is a vector of the grades at which each toxicity type qualifies as a DLT
+
 nTTP.calc.fn <- function(ntox, W, grade.thresh){
   hyp.plot = "function(){
   W = cbind(rep(0, ntox), W)
@@ -116,54 +116,60 @@ nTTP.calc.fn <- function(ntox, W, grade.thresh){
   return(fn)
 }
 
-# Function that calls nTTP.calc.fn, plots distributions, and gives suggested hypothesis values
-# grade.thresh is a vector of the grade at which each toxicity type qualifies as a DLT
-nTTP.hypothesis <- function(ntox, W, grade.thresh){
-  
-  ### Calculate all possible nTTP values ###
-  ### DLT defined as grade >= 3 in any toxicity category ###
-  nTTP.calc = eval(parse(text = "nTTP.calc.fn(ntox, W, grade.thresh)"))
-  tt = nTTP.calc()
-  
-  ## Plot distributions
-  par(mfrow = c(2, 1))
-  hist(tt[["h2"]], xlim = c(0, 1), main = "No DLTs")
-  abline(v = mean(tt[["h2"]]), lty = 3, lwd = 2)
-  hist(tt[["h1"]], xlim = c(0, 1), main = ">0 DLTs")
-  abline(v = mean(tt[["h1"]]), lty = 3, lwd = 2)
-  
-  
-  ## Suggested hypotheses
-  sug = lapply(tt, mean) # hypothesis values
-  
-  return(list(suggested.H = sug, all.nTTP = tt))
-}
+# # Function that calls nTTP.calc.fn, plots distributions, and gives suggested hypothesis values
+# # grade.thresh is a vector of the grade at which each toxicity type qualifies as a DLT
+# nTTP.hypothesis <- function(ntox, W, grade.thresh){
+#   
+#   ### Calculate all possible nTTP values ###
+#   ### DLT defined as grade >= 3 in any toxicity category ###
+#   nTTP.calc = eval(parse(text = "nTTP.calc.fn(ntox, W, grade.thresh)"))
+#   tt = nTTP.calc()
+#   
+#   ## Plot distributions
+#   par(mfrow = c(2, 1))
+#   hist(tt[["h2"]], xlim = c(0, 1), main = "No DLTs")
+#   abline(v = mean(tt[["h2"]]), lty = 3, lwd = 2)
+#   hist(tt[["h1"]], xlim = c(0, 1), main = ">0 DLTs")
+#   abline(v = mean(tt[["h1"]]), lty = 3, lwd = 2)
+#   
+#   
+#   ## Suggested hypotheses
+#   sug = lapply(tt, mean) # hypothesis values
+#   
+#   return(list(suggested.H = sug, all.nTTP = tt))
+# }
 
+#################################################################################
+################################## STAGE 1 ######################################
+#################################################################################
 
 nTTP.indiv.sim <- function(W, TOX, ntox, dose){
+
+  # Simulate grade observed for each toxicity type, based on TOX probabilities
   Tox <- NA
-  random.tox <- runif(ntox) #draw random number from uniform(0,1)
-  comb.curr <- dose #Define current dose level
-  
-  thetamax = sum(W[, 4]^2)
-  
   for (k in 1:ntox) {
-    Tox[k] <- ifelse(random.tox[k] < TOX[comb.curr, 1, k] || TOX[comb.curr,1,k] == 0, 0, 
-                     ifelse(random.tox[k] < TOX[comb.curr, 2, k] + TOX[comb.curr, 1, k], 1, 
-                            ifelse(random.tox[k] < TOX[comb.curr, 2, k] + TOX[comb.curr, 1, k] + TOX[comb.curr, 3, k], 2,
-                                   ifelse(random.tox[k] < TOX[comb.curr, 1, k] + TOX[comb.curr, 2, k] + TOX[comb.curr, 3, k] + TOX[comb.curr, 4, k], 3, 4))))
+    # Tox vector of observed toxicity's grades for each toxicity given the current dose
+    Tox[k] = sample(0:4, size = 1, replace = TRUE, prob = TOX[dose, , k])
   }
-  #Tox #vector of observed toxicity's grades for each toxicity given the current dose
+
+  # Corresponding weights
   toxscores <- NA
   for (k in 1:ntox) {
-    toxscores[k] <- ifelse(max(Tox[k]) == 0, 0, W[k, max(Tox[k])]) 
+    # ifelse statement bc W does not have zero weights for grade 0
+    toxscores[k] <- ifelse(Tox[k] == 0, 
+                           0, # weight for grade 0
+                           W[k, Tox[k]]) # weight of AE given grade, tox type
   }
   
-  nTTP <- sqrt(sum(toxscores^2) / thetamax) #The observed toxicity score the patient 
+  # nTTP calculation
+  thetamax = sum(W[, 4]^2)
+  nTTP <- sqrt(sum(toxscores^2) / thetamax) # The observed nTTP for the patient 
+  
   return(nTTP)
 }
 
 
+# Escalation scheme for stage 1, based on observed nTTP values at each dose (calculate LR)
 tox.profile.nTTP <- function(dose, p1, p2, K, coh.size, ntox, W, TOX, sigma = 0.15){ 
   
   dose   <- c(1:dose) # vector of counts up to number of doses given
@@ -179,11 +185,14 @@ tox.profile.nTTP <- function(dose, p1, p2, K, coh.size, ntox, W, TOX, sigma = 0.
   
   while ((stop == 0) & (i <= length(dose))) {
     cohort <- cohort + 1                                        # current cohort corresponding to dose
+    
+    # nTTPs for all patients (size coh.size) on dose i
     coh.nttp  <- replicate(coh.size, nTTP.indiv.sim(W = W, 
                                                     TOX = TOX, 
                                                     ntox = ntox, 
                                                     dose = dose[i]))	# nTTPs for that dose based on tox prob
     
+    # Calculate LR
     l.p2   <- prod(sapply(coh.nttp, FUN = function(i){ dnorm((i - p2)/sigma) })) / 
       (sigma*(pnorm((b - p2)/sigma) - pnorm((a - p2)/sigma)))^coh.size # likelihood of acceptable/alternative hypothesis 
     l.p1   <- prod(sapply(coh.nttp, FUN = function(i){ dnorm((i - p1)/sigma) })) / 
@@ -192,11 +201,12 @@ tox.profile.nTTP <- function(dose, p1, p2, K, coh.size, ntox, W, TOX, sigma = 0.
     
     x <- c(x, dose[i], mean(coh.nttp), cohort, LR)                              			
     
-    nttp = append(nttp, coh.nttp)
+    # list of observed nTTP
+    nttp = append(nttp, coh.nttp) 
     
     if (LR <= (1/K)) {       # stop escalation
       stop <- 1
-    } else if (LR > (1/K)) { # escalate to next dose
+    } else if (LR > (1/K)) { # escalate to next dose i + 1
       i <- i + 1	 
     }
     
@@ -205,15 +215,19 @@ tox.profile.nTTP <- function(dose, p1, p2, K, coh.size, ntox, W, TOX, sigma = 0.
               all_nTTP = nttp))
 } 
 
+
+
 safe.dose.nTTP <- function(dose, p1, p2, K, coh.size, W, TOX, ntox, sigma = 0.15) {
   
+  # simulate 
   tox <- tox.profile.nTTP(dose = dose, p1 = p1, p2 = p2, K = K, 
                           coh.size = coh.size, ntox = ntox, W = W, TOX = TOX, sigma = sigma)
   res <- tox$mnTTP
-  all_nttp <- tox$all_nTTP
+  all_nttp <- tox$all_nTTP # all observed nTTP in stage 1
   
-  alloc.total <- sort(rep(res[, 1], coh.size))
-  n1 <- nrow(res) * coh.size
+  alloc.total <- sort(rep(res[, 1], coh.size)) # dose allocation for all patients (stage 1)
+  n1 <- nrow(res) * coh.size # sample size in stage 1
+  
   unsafe.dose <- which(res[, 4] <= (1/K))
   if (length(unsafe.dose) == 0) {
     alloc.safe <- res[, 1:2]
@@ -234,21 +248,22 @@ eff.stg1.nTTP <- function(dose, p1, p2, K, coh.size, m, v, nbb = 100, W, TOX, nt
   n1 <- res$n1
   all_nttp <- res$all_nttp
   
+  # Simulate efficacy outcomes for all doses that enrolled patients
   for (i in 1:length(d.alloc)) {
     ab <- beta.ab(m[d.alloc[i]]/100, v[d.alloc[i]])
     p <- stats::rbeta(1, ab$a, ab$b)
     Y.alloc[i] <- 100 * stats::rbinom(1, nbb, p)/nbb
   }
   
-  if (length(val.safe) > 2) {
+  if (length(val.safe) > 2) { # if more than one dose found safe
     d.safe <- sort(rep(val.safe[, 1], coh.size))
     tox.safe <- res$alloc.safe[, 2]
     Y.safe <- Y.alloc[1:length(d.safe)]
-  } else if (length(val.safe) == 2) {
+  } else if (length(val.safe) == 2) { # if exactly one dose (the first) found safe
     d.safe <- sort(rep(val.safe[1], coh.size))
     tox.safe <- res$alloc.safe[2]
     Y.safe <- Y.alloc[1:length(d.safe)]
-  } else {
+  } else { # if no doses found safe (first dose is too toxic)
     Y.safe <- d.safe <- NULL
     tox.safe <- res$alloc.safe[, 2]
   }
@@ -257,7 +272,9 @@ eff.stg1.nTTP <- function(dose, p1, p2, K, coh.size, m, v, nbb = 100, W, TOX, nt
               n1 = n1, Y.alloc = Y.alloc, d.alloc = d.alloc, all_nttp = all_nttp))
 }
 
-
+#################################################################################
+################################# STAGE 1+2 #####################################
+#################################################################################
 
 rand.stg2.nTTP <- function(dose, p1, p2, K, coh.size, m, v, N, stop.rule = 9, 
                            cohort = 1, samedose = TRUE, nbb = 100, W, TOX, ntox, sigma = 0.15) {
@@ -276,12 +293,13 @@ rand.stg2.nTTP <- function(dose, p1, p2, K, coh.size, m, v, N, stop.rule = 9,
   nd <- length(unique(dk.safe)) # number of safe doses
   rp <- NULL
   stop <- 0
-  if (nd == 0) {
+  
+  if (nd == 0) { # if no doses found safe
     yk.final <- yk.final
     dk.final <- dk.final
     stop <- 1
   }
-  if (nd == 1) {
+  if (nd == 1) { # if exactly one dose found safe
     extra <- stop.rule - length(dk.safe)
     ab <- beta.ab(m[1]/100, v[1])
     y.extra <- 100 * stats::rbinom(extra, nbb, stats::rbeta(1, ab$a, ab$b))/nbb
@@ -289,7 +307,7 @@ rand.stg2.nTTP <- function(dose, p1, p2, K, coh.size, m, v, N, stop.rule = 9,
     dk.final <- c(dk.final, rep(1, extra))
     stop <- 1
   }
-  if (nd > 1) {
+  if (nd > 1) { # if more than one dose found safe
     coh.toxk <- cbind(matrix(dk.safe, ncol = coh.size, byrow = TRUE)[, 1], toxk)
     for (k in 1:nmore) {
       if (stop == 0) {
@@ -327,7 +345,7 @@ rand.stg2.nTTP <- function(dose, p1, p2, K, coh.size, m, v, N, stop.rule = 9,
         coh.toxk <- data.frame(dose = dk.final, 
                                nttp = all_nttp) 
         
-        
+        # calculate new LR for all patients on the given dose
         l.p2 <- NULL
         l.p1 <- NULL
         LR <- NULL
@@ -409,7 +427,9 @@ rand.stg2.nTTP <- function(dose, p1, p2, K, coh.size, m, v, N, stop.rule = 9,
 
 
 
-
+#################################################################################
+################################## WRAPPER ######################################
+#################################################################################
 
 
 sim.trials.nTTP <- function (numsims, dose, p1, p2, K, coh.size, m, v, 
